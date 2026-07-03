@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SADA Analytics v29 — Plataforma de Análisis Académico Integral</title>
+<style>
+:root{--navy:#1B2A4A;--blue:#2E75B6;--teal:#138A96;--mag:#C2185B;--green:#2E8B57;--amber:#F2A900;--bg:#F4F7FB;--light:#EAF1FA;--bord:#D5DEEB;--dark:#1F2937;--gray:#6B7280;--success:#10B981;--danger:#EF4444}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Arial,sans-serif;color:var(--dark);background:var(--bg);line-height:1.5}button{font-family:inherit;cursor:pointer;border:none}.hidden{display:none!important}a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+#header{background:linear-gradient(90deg,var(--navy) 0%,#1e3a5f 100%);color:#fff;height:75px;display:flex;align-items:center;padding:0 32px;position:sticky;top:0;z-index:100;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.logo-container{display:flex;align-items:center;gap:16px;flex:1;cursor:pointer}.logo-svg{width:55px;height:55px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.2))}.logo-text{display:flex;flex-direction:column;line-height:1.1}.logo-text .brand{font-size:22px;font-weight:800;letter-spacing:.5px}.logo-text .tagline{font-size:11px;opacity:.85;font-weight:500}
+.header-center{flex:1;text-align:center;font-size:18px;font-weight:600;color:#fff;display:none}.header-right{display:flex;align-items:center;gap:20px}.user-info{display:flex;align-items:center;gap:10px;font-size:13px}
+.user-role-display{font-size:11px;font-weight:700;text-transform:uppercase;color:#4DD0E1;background:rgba(255,255,255,.1);padding:3px 8px;border-radius:6px;letter-spacing:.5px}
+.user-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--blue));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.btn-logout{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;padding:7px 16px;border-radius:6px;font-size:12px;transition:.2s}.btn-logout:hover{background:rgba(255,255,255,.25)}
+#login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#2E75B6 0%,#1B2A4A 100%);position:relative;overflow:hidden}.login-blob{position:absolute;border-radius:50%;opacity:.08;background:#fff}.login-wrapper{max-width:500px;width:95%;background:#fff;border-radius:20px;padding:60px 48px;box-shadow:0 25px 80px rgba(0,0,0,.25);position:relative;z-index:2;animation:slideUp .6s ease}@keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+.login-logo{display:flex;justify-content:center;margin-bottom:24px}.login-logo svg{width:90px;height:90px;filter:drop-shadow(0 4px 8px rgba(46,117,182,.3))}.login-title{font-size:32px;font-weight:800;color:var(--navy);text-align:center;margin-bottom:8px;letter-spacing:-.5px}.login-sub{font-size:14px;color:var(--gray);text-align:center;margin-bottom:32px;line-height:1.5}
+.form-tabs{display:flex;gap:12px;margin-bottom:28px;border-bottom:2px solid var(--light)}.form-tab{flex:1;padding:14px 0;text-align:center;cursor:pointer;font-size:14px;font-weight:600;color:var(--gray);border-bottom:3px solid transparent;margin-bottom:-2px;transition:.2s}.form-tab.active{color:var(--blue);border-bottom-color:var(--blue)}.form-group{margin-bottom:20px}.form-label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:8px}.form-input{width:100%;height:48px;border:1.5px solid var(--bord);border-radius:10px;padding:0 16px;font-size:14px;color:var(--dark);transition:.3s}.form-input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(46,117,182,.1);background:#fff}.field-help{font-size:12px;color:var(--gray);margin-top:6px;line-height:1.4}
+.btn-login{width:100%;height:52px;background:linear-gradient(135deg,var(--blue) 0%,var(--teal) 100%);color:#fff;border-radius:10px;font-size:16px;font-weight:700;margin-top:24px;transition:.3s;box-shadow:0 4px 12px rgba(46,117,182,.3)}.btn-login:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(46,117,182,.5)}.login-link{display:block;text-align:center;margin-top:18px;font-size:13px;color:var(--gray)}.login-link a{color:var(--blue);font-weight:600}
+.modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;visibility:hidden;transition:.3s}.modal.show{opacity:1;visibility:visible}.modal-content{background:#fff;border-radius:16px;padding:40px;max-width:480px;width:95%;box-shadow:0 25px 80px rgba(0,0,0,.3);animation:popIn .3s ease;max-height:90vh;overflow-y:auto}@keyframes popIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}.modal-title{font-size:24px;font-weight:700;color:var(--navy);margin-bottom:16px}.modal-body{font-size:14px;color:var(--dark);margin-bottom:24px;line-height:1.6}.modal-buttons{display:flex;gap:12px;justify-content:flex-end;margin-top:16px}.btn-cancel{background:var(--light);color:var(--blue);padding:12px 24px;border-radius:8px;font-weight:600;transition:.2s}.btn-submit{background:var(--blue);color:#fff;padding:12px 24px;border-radius:8px;font-weight:600;transition:.2s}.btn-cancel:hover{background:#E0E7F1}.btn-submit:hover{background:#256099}
+#app-page{display:flex;flex-direction:column;min-height:100vh;padding-top:75px}.app-container{display:flex;flex:1}.sidebar{width:240px;background:#fff;border-right:1px solid var(--bord);padding:24px 0;flex-shrink:0;max-height:calc(100vh - 75px);overflow-y:auto}.sidebar-title{padding:0 24px;font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;margin-top:12px}
+.nav-item{display:flex;align-items:center;padding:14px 24px;font-size:14px;color:var(--gray);background:transparent;border-left:4px solid transparent;transition:.2s;gap:12px;cursor:pointer;width:100%;text-align:left}.nav-item:hover{background:var(--light);color:var(--blue)}.nav-item.active{background:var(--light);color:var(--blue);font-weight:600;border-left-color:var(--blue)}.nav-icon{font-size:18px;min-width:20px}
+.main-content{flex:1;padding:40px;overflow-y:auto;max-height:calc(100vh - 75px)}.page-header{margin-bottom:32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}.page-title{font-size:32px;font-weight:800;color:var(--navy);letter-spacing:-.5px}.page-sub{font-size:14px;color:var(--gray);margin-top:6px}
+.card{background:#fff;border:1px solid var(--bord);border-radius:14px;padding:28px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,.06)}.card h3{font-size:18px;font-weight:700;color:var(--navy);margin-bottom:20px;display:flex;align-items:center;gap:10px}.card h3::before{content:'';display:inline-block;width:4px;height:24px;border-radius:2px;background:var(--blue)}.grid{display:grid;gap:24px}.grid-4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.kpi{background:linear-gradient(135deg,#fff 0%,#f9fafb 100%);border:1px solid var(--bord);border-radius:12px;padding:24px;border-left:5px solid var(--blue);transition:.3s;cursor:pointer}.kpi:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.1)}.kpi.teal{border-left-color:var(--teal)}.kpi.mag{border-left-color:var(--mag)}.kpi.green{border-left-color:var(--green)}.kpi.amber{border-left-color:var(--amber)}.kpi.purple{border-left-color:#6A3FA0}.kpi-value{font-size:36px;font-weight:800;color:var(--navy);margin-bottom:8px}.kpi-label{font-size:13px;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.data-table{width:100%;border-collapse:collapse;font-size:14px}.data-table th{background:var(--light);padding:14px;text-align:left;font-weight:700;color:var(--navy);border-bottom:2px solid var(--bord);font-size:13px}.data-table td{padding:14px;border-bottom:1px solid var(--bord)}.data-table tr:hover{background:var(--bg)}
+.pill{display:inline-block;padding:6px 14px;border-radius:14px;font-size:12px;font-weight:700}.pill.alto{background:#FFEBEE;color:#B71C1C}.pill.medio{background:#FFF3E0;color:#E65100}.pill.bajo{background:#E3F2FD;color:#01579B}.pill.ascendente{background:#E8F5E9;color:#1B5E20}.pill.descendente{background:#FFEBEE;color:#B71C1C}.pill.estable{background:#E3F2FD;color:#01579B}
+.table-container{max-height:450px;overflow-y:auto}
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;padding:12px 28px;border-radius:8px;font-weight:600;font-size:14px;transition:.2s;box-shadow:0 4px 12px rgba(46,117,182,.2)}.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(46,117,182,.4)}.btn-secondary{background:var(--light);color:var(--blue);padding:12px 28px;border-radius:8px;font-weight:600;font-size:14px;border:1px solid var(--bord);transition:.2s}.btn-secondary:hover{background:#E0E7F1}.btn-sm{padding:6px 14px;font-size:12px}
+.input-search{width:100%;max-width:350px;height:44px;border:1.5px solid var(--bord);border-radius:10px;padding:0 16px;font-size:14px;background:#fff}.input-search:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(46,117,182,.1)}
+.user-card{display:flex;justify-content:space-between;align-items:center;padding:16px;border:1px solid var(--bord);border-radius:10px;margin-bottom:12px;background:#fff;transition:.2s}.user-card:hover{border-color:var(--blue);background:var(--light)}.user-info-col{flex:1;min-width:0}.user-name{font-weight:700;font-size:15px;color:var(--navy);display:flex;align-items:center;flex-wrap:wrap;gap:8px}.user-role-inline{font-size:12px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--blue),var(--teal));padding:3px 10px;border-radius:6px;letter-spacing:.5px}.user-email{font-size:13px;color:var(--gray);margin-top:4px}.user-meta{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;align-items:center}.user-badge-inst{font-size:11px;background:var(--teal);color:#fff;padding:4px 10px;border-radius:6px;font-weight:600}.role-note{background:#F8FAFC;border:1px dashed var(--bord);border-radius:10px;padding:12px 14px;margin-bottom:16px;color:var(--gray);font-size:13px}.role-note b{color:var(--navy)}
+.ux-panel{background:linear-gradient(135deg,#fff 0%,#F8FAFC 100%);border:1px solid var(--bord);border-radius:14px;padding:20px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,.04)}.ux-panel h3{font-size:17px;color:var(--navy);margin-bottom:10px}.ux-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:12px}.ux-tip{background:#fff;border:1px solid var(--bord);border-left:4px solid var(--teal);border-radius:10px;padding:12px;font-size:13px;color:var(--dark)}.quick-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}.btn-pdf{background:#fff;color:var(--mag);border:1px solid #F3C2D4;padding:12px 24px;border-radius:8px;font-weight:700;font-size:14px;transition:.2s}.btn-pdf:hover{background:#FFF5F8;transform:translateY(-1px)}.toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:16px}.muted{color:var(--gray);font-size:13px}.empty-state{padding:32px;text-align:center;color:var(--gray);background:#F8FAFC;border:1px dashed var(--bord);border-radius:12px}#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(100px);color:#fff;padding:14px 24px;border-radius:10px;font-size:14px;box-shadow:0 12px 40px rgba(0,0,0,.3);opacity:0;transition:.3s;z-index:2000;background:var(--navy)}#toast.show{transform:translateX(-50%) translateY(0);opacity:1}#toast.t-ok{background:var(--success)}#toast.t-err{background:var(--danger)}#toast.t-warn{background:var(--amber);color:var(--dark)}
+.admin-only,.grade-manage-only,.obs-manage-only{display:none}.muted-note{font-size:12px;color:var(--gray);margin-top:8px}
+@media(max-width:900px){.sidebar{width:70px}.nav-item{justify-content:center;padding:14px}.nav-item span:nth-child(2){display:none}.main-content{padding:24px}.page-title{font-size:24px}.grid-4{grid-template-columns:repeat(2,1fr)}}
+
+.voc-hero{background:linear-gradient(135deg,rgba(46,117,182,.12),rgba(19,138,150,.12));border:1px solid var(--bord);border-left:6px solid var(--teal);border-radius:16px;padding:24px;margin-bottom:24px;display:grid;grid-template-columns:1.7fr 1fr;gap:18px;align-items:center}.voc-hero h2{color:var(--navy);font-size:24px;margin-bottom:8px}.voc-hero p{color:var(--dark);line-height:1.7}.voc-steps{display:grid;gap:8px}.voc-step{background:#fff;border:1px solid var(--bord);border-radius:12px;padding:10px;font-size:13px}.dark-mode .voc-step{background:#111827}.voc-score{font-size:34px;font-weight:800;color:var(--teal)}
+@media(max-width:760px){.voc-hero{grid-template-columns:1fr;padding:18px}.voc-hero h2{font-size:20px}.voc-score{font-size:28px}}
+
+.bulk-box{background:linear-gradient(135deg,#F8FBFF,#EEF7FF);border:1px dashed var(--blue);border-radius:14px;padding:18px;margin-bottom:18px;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}.bulk-box b{color:var(--navy)}.bulk-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.file-input{max-width:280px;background:#fff;border:1px solid var(--bord);border-radius:8px;padding:10px}.import-summary{background:#ECFDF5;border:1px solid #A7F3D0;color:#065F46;border-radius:10px;padding:12px;margin:12px 0}.import-errors{background:#FEF2F2;border:1px solid #FECACA;color:#991B1B;border-radius:10px;padding:12px;margin:12px 0}.dark-mode .bulk-box{background:#0F172A;border-color:#38BDF8}.dark-mode .file-input{background:#111827;color:#E5E7EB;border-color:#334155}
+
+@media(max-width:600px){.app-container{flex-direction:column}.sidebar{width:100%;height:auto;max-height:none;padding:12px 0;display:flex;overflow-x:auto;border-right:none;border-bottom:1px solid var(--bord)}.nav-item{flex-shrink:0;padding:12px 16px}.grid-4{grid-template-columns:1fr}.login-wrapper{padding:32px 20px}.user-card{flex-direction:column;align-items:flex-start;gap:12px}.modal-content{padding:24px 20px}}
+
+/* ===== UX RESPONSIVE + NUEVAS TARJETAS ===== */
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:16px}.info-card{border:1px solid var(--bord);background:#fff;border-radius:12px;padding:16px}.info-card b{color:var(--navy)}.mini-text{font-size:12px;color:var(--gray);line-height:1.6}.logic-box{background:#F8FAFC;border:1px dashed var(--bord);border-radius:12px;padding:18px;margin-bottom:18px}.logic-box h4{color:var(--navy);margin-bottom:10px}.motivation-box{background:linear-gradient(135deg,#FFF8E1,#F8FAFC);border-left:5px solid var(--amber);border-radius:12px;padding:18px;margin:16px 0;color:var(--dark)}.motivation-box .quote{font-weight:700;color:var(--navy);margin-bottom:8px}.metric-detail{font-size:12px;color:var(--gray);line-height:1.55}.btn-ghost{background:#fff;color:var(--blue);padding:10px 18px;border-radius:8px;font-weight:600;border:1px solid var(--bord)}.btn-ghost:hover{background:var(--light)}.orientation-actions{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 4px}.mobile-hint{display:none;font-size:12px;color:var(--gray);margin-top:8px}.kpi.actionable{cursor:pointer}.kpi.actionable:after{content:'Abrir';display:inline-block;margin-top:10px;font-size:11px;color:var(--blue);font-weight:700}
+@media(max-width:760px){
+  #header{height:auto;min-height:64px;padding:10px 14px;gap:10px;flex-wrap:wrap;position:sticky}
+  .logo-svg{width:42px;height:42px}.logo-text .brand{font-size:18px}.logo-text .tagline{font-size:10px}.header-center{display:none!important}.header-right{width:100%;justify-content:space-between;gap:8px}.user-info{font-size:12px}.user-avatar{width:34px;height:34px}.btn-logout{padding:7px 12px}
+  #app-page{padding-top:0}.app-container{flex-direction:column}.sidebar{width:100%;max-height:none;display:flex;overflow-x:auto;padding:8px;background:#fff;border-right:0;border-bottom:1px solid var(--bord);position:sticky;top:0;z-index:80}.sidebar-title{display:none}.nav-item{min-width:105px;justify-content:center;border-left:0;border-bottom:3px solid transparent;border-radius:10px;padding:10px 12px;font-size:12px}.nav-item.active{border-left-color:transparent;border-bottom-color:var(--blue)}.nav-icon{font-size:17px}.main-content{padding:16px;max-height:none;overflow:visible}.page-header{align-items:flex-start;margin-bottom:18px}.page-title{font-size:22px}.page-sub{font-size:13px}.card{padding:16px;border-radius:12px}.grid-4{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.kpi{padding:16px}.kpi-value{font-size:26px}.kpi-label{font-size:11px}.table-container{overflow-x:auto;max-height:none}.data-table{min-width:720px;font-size:13px}.toolbar{align-items:flex-start}.input-search{max-width:100%}.form-input{height:46px}.modal-content{width:94%;padding:20px}.mobile-hint{display:block}.ux-list,.quick-actions,.orientation-actions{flex-direction:column}.quick-actions button,.orientation-actions button{width:100%}
+}
+@media(max-width:420px){.grid-4{grid-template-columns:1fr}.nav-item{min-width:92px}.nav-item span:nth-child(2){display:inline}.user-role-display{font-size:10px}.data-table{min-width:650px}}
+
+
+/* ===== MEJORA RESPONSIVE V6 ===== */
+.mobile-menu-toggle{display:none;background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;margin:12px 16px 0;padding:12px 16px;border-radius:10px;font-weight:800;box-shadow:0 4px 12px rgba(46,117,182,.25)}
+@media(max-width:760px){
+  #header{height:auto;min-height:64px;padding:10px 14px;gap:8px;flex-wrap:wrap;position:sticky;top:0}
+  .logo-svg{width:42px;height:42px}.logo-text .brand{font-size:18px}.header-center{display:none!important}.header-right{gap:8px;width:100%;justify-content:space-between}.user-info{font-size:12px}.user-avatar{width:34px;height:34px}.btn-logout{padding:7px 12px}
+  #app-page{padding-top:0}.mobile-menu-toggle{display:block;width:calc(100% - 32px);text-align:left}
+  .app-container{flex-direction:column}.sidebar{display:none;width:calc(100% - 32px);margin:10px 16px 0;border:1px solid var(--bord);border-radius:14px;padding:10px;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.08);position:static;max-height:none;overflow:visible}
+  body.mobile-menu-open .sidebar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .sidebar-title{display:none}.nav-item{display:flex!important;min-width:0;width:100%;justify-content:flex-start;border-left:0;border-bottom:0;border-radius:10px;padding:11px 10px;font-size:12px;gap:8px}.nav-item span:nth-child(2){display:inline}.nav-item.active{background:var(--light);border-left:4px solid var(--blue);border-bottom:0}.nav-icon{font-size:18px;min-width:18px}
+  .main-content{padding:16px;max-height:none;overflow:visible}.page-title{font-size:22px}.page-sub{font-size:13px}.card{padding:16px}.grid-4{grid-template-columns:1fr 1fr;gap:12px}.kpi{padding:16px}.kpi-value{font-size:26px}.table-container{overflow-x:auto;max-height:none}.data-table{min-width:720px}.orientation-actions,.quick-actions,.toolbar{flex-direction:column;align-items:stretch}.orientation-actions button,.quick-actions button{width:100%}
+}
+@media(max-width:420px){.grid-4{grid-template-columns:1fr}.data-table{min-width:650px}.nav-item{font-size:11px;padding:10px 8px}}
+
+/* === Mejoras v7: plan semanal, barras y semáforo === */
+.weekly-plan{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:start}.plan-summary{background:#F8FAFC;border:1px solid var(--bord);border-radius:14px;padding:18px}.bar-chart{display:grid;gap:12px;margin-top:16px}.bar-row{display:grid;grid-template-columns:88px 1fr 48px;gap:10px;align-items:center;font-size:13px}.bar-track{height:18px;background:#EAF1FA;border-radius:999px;overflow:hidden;border:1px solid var(--bord)}.bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));border-radius:999px;min-width:4px}.plan-list{display:grid;gap:10px;margin-top:12px}.plan-item{background:#fff;border:1px solid var(--bord);border-left:5px solid var(--blue);border-radius:12px;padding:12px}.plan-item b{color:var(--navy)}.traffic-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px}.traffic-card{background:#fff;border:1px solid var(--bord);border-radius:12px;padding:14px}.traffic-dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:8px}.dot-green{background:var(--success)}.dot-amber{background:var(--amber)}.dot-red{background:var(--danger)}.idea-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.idea-card{background:#fff;border:1px solid var(--bord);border-radius:12px;padding:16px}.idea-card b{color:var(--navy)}.idea-card p{font-size:12px;color:var(--gray);margin-top:6px;line-height:1.55}.badge-soft{display:inline-block;background:var(--light);color:var(--blue);border:1px solid var(--bord);border-radius:999px;padding:5px 10px;font-size:11px;font-weight:800;margin:3px}.btn-plan{background:linear-gradient(135deg,var(--green),var(--teal));color:#fff;padding:12px 22px;border-radius:8px;font-weight:700;box-shadow:0 4px 12px rgba(19,138,150,.25)}
+@media(max-width:760px){.weekly-plan{grid-template-columns:1fr}.bar-row{grid-template-columns:72px 1fr 42px}.bar-row span:first-child{font-size:12px}.plan-summary{padding:14px}.idea-grid{grid-template-columns:1fr}}
+
+/* === subpestañas dentro de Análisis === */
+.analysis-tabs{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 18px}.analysis-tab{background:#fff;border:1px solid var(--bord);color:var(--gray);padding:11px 16px;border-radius:999px;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,.04)}.analysis-tab.active{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;border-color:transparent}.analysis-panel{animation:fadeIn .18s ease}.wellness-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}@keyframes fadeIn{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}@media(max-width:600px){.analysis-tabs{display:grid;grid-template-columns:1fr}.analysis-tab{width:100%;border-radius:12px}.page-header .btn-plan{width:100%;margin-top:10px}}
+
+/* === v9: experiencia por rol y móvil mejorado === */
+.dash-grid-simple{display:grid;grid-template-columns:repeat(4,minmax(160px,1fr));gap:14px;margin-top:16px}.dash-card{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--bord);border-radius:14px;padding:16px;cursor:pointer;transition:.2s;box-shadow:0 2px 8px rgba(0,0,0,.04)}.dash-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.08);border-color:var(--blue)}.dash-icon{font-size:28px;min-width:38px;text-align:center}.dash-card b{display:block;color:var(--navy);font-size:14px}.dash-card strong{display:block;color:var(--blue);font-size:24px;line-height:1.2;margin-top:2px}.dash-card small{display:block;color:var(--gray);font-size:12px;line-height:1.35;margin-top:4px}@media(max-width:900px){.dash-grid-simple{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:520px){.dash-grid-simple{grid-template-columns:1fr}.dash-card{padding:14px}.dash-card strong{font-size:22px}}
+.role-flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:14px}.role-step{background:#fff;border:1px solid var(--bord);border-radius:12px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.04)}.role-step b{color:var(--navy)}.role-step small{display:block;color:var(--gray);margin-top:5px;line-height:1.4}.role-warning{background:#FFF8E1;border-left:5px solid var(--amber);padding:12px;border-radius:10px;margin-top:14px;color:#5B4300}.next-action{background:linear-gradient(135deg,#F8FAFC,#EEF6FF);border:1px solid var(--bord);border-radius:14px;padding:16px;margin-top:16px}.mobile-menu-toggle{position:sticky;top:0;z-index:120}.data-table td,.data-table th{vertical-align:top}@media(max-width:600px){.role-flow{grid-template-columns:1fr}.quick-actions{gap:10px}.quick-actions button{min-height:44px}.sidebar{box-shadow:0 8px 24px rgba(0,0,0,.08)}body.mobile-menu-open .mobile-menu-toggle{border-radius:10px 10px 0 0}.page-title{line-height:1.15}.metric-detail{font-size:12px}}
+
+/* === v10: modo día/noche y limpieza de módulos por rol === */
+.theme-toggle{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;padding:7px 12px;border-radius:6px;font-size:12px;font-weight:700;transition:.2s}.theme-toggle:hover{background:rgba(255,255,255,.22)}
+body.dark-mode{--bg:#0F172A;--light:#1E293B;--bord:#334155;--dark:#E5E7EB;--gray:#CBD5E1;--navy:#EAF1FA;background:var(--bg);color:var(--dark)}
+body.dark-mode #header{background:linear-gradient(90deg,#020617,#0F172A)}
+body.dark-mode .sidebar,body.dark-mode .card,body.dark-mode .modal-content,body.dark-mode .login-wrapper,body.dark-mode .info-card,body.dark-mode .idea-card,body.dark-mode .traffic-card,body.dark-mode .plan-item,body.dark-mode .role-step,body.dark-mode .analysis-tab,body.dark-mode .btn-pdf,body.dark-mode .btn-ghost,body.dark-mode .form-input,body.dark-mode .input-search{background:#111827;color:var(--dark);border-color:var(--bord)}
+body.dark-mode .kpi,body.dark-mode .ux-panel,body.dark-mode .logic-box,body.dark-mode .plan-summary,body.dark-mode .next-action,body.dark-mode .empty-state{background:#111827;color:var(--dark);border-color:var(--bord)}
+body.dark-mode .data-table th{background:#1E293B;color:#EAF1FA}body.dark-mode .data-table tr:hover{background:#172033}body.dark-mode .motivation-box{background:#1E293B;color:#E5E7EB}body.dark-mode .role-warning{background:#2A2106;color:#FDE68A}body.dark-mode .bar-track{background:#1E293B}body.dark-mode .login-sub,body.dark-mode .mini-text,body.dark-mode .muted,body.dark-mode .page-sub,body.dark-mode .metric-detail{color:#CBD5E1}
+body.dark-mode .btn-secondary{background:#1E293B;color:#93C5FD;border-color:#334155}body.dark-mode .btn-secondary:hover,body.dark-mode .btn-ghost:hover{background:#253247}
+@media(max-width:760px){.theme-toggle{padding:7px 10px}.header-right{flex-wrap:wrap}}
+
+.course-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}.course-card{background:linear-gradient(135deg,#fff 0%,#f8fafc 100%);border:1px solid var(--bord);border-radius:14px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.05);border-left:5px solid var(--blue)}.course-card h4{color:var(--navy);font-size:17px;margin-bottom:8px}.course-meta{font-size:13px;color:var(--gray);line-height:1.7}.course-score{font-size:26px;font-weight:900;color:var(--navy);margin:12px 0 6px}.course-tip{background:var(--light);border-radius:10px;padding:10px;margin-top:12px;font-size:13px;color:var(--dark)}.course-notes{margin-top:10px;font-size:12px;color:var(--gray);line-height:1.6}.dark-mode .course-card{background:#111827}.dark-mode .course-tip{background:#0f172a;color:#E5E7EB}@media(max-width:600px){.course-grid{grid-template-columns:1fr}.course-card{padding:16px}.course-score{font-size:22px}}
+
+/* === v18: ocultamiento real por rol incluso en móvil === */
+.nav-item.hidden,.nav-item[aria-hidden="true"],[data-page].hidden{display:none!important;visibility:hidden!important;pointer-events:none!important}
+body.role-estudiante .admin-only,body.role-padre .admin-only,body.role-docente .admin-only{display:none!important}
+.role-context-chip{display:inline-block;background:var(--light);border:1px solid var(--bord);border-radius:999px;padding:7px 12px;font-size:12px;font-weight:800;color:var(--blue);margin-top:8px}
+.auto-student-note{background:#ECFDF5;border:1px solid #BBF7D0;color:#065F46;border-radius:10px;padding:10px 12px;margin:10px 0;font-size:13px;font-weight:700}
+
+/* v19 integraciones interactivas */
+.integration-grid{align-items:stretch}.integration-card{min-height:230px}.sync-status{margin:10px 0 12px;color:var(--gray);font-size:13px}.progress{height:12px;background:var(--light);border-radius:999px;overflow:hidden;border:1px solid var(--bord);margin:10px 0 14px}.progress-bar{height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));border-radius:999px;transition:width .35s ease}.simulation-output{border:1px dashed var(--bord);background:var(--bg);border-radius:12px;padding:18px;color:var(--gray);line-height:1.7}.flow-line{background:linear-gradient(135deg,var(--light),#fff);border:1px solid var(--bord);border-radius:12px;padding:18px;font-weight:700;color:var(--navy);line-height:1.8}.dark-mode .simulation-output{background:#101827}.dark-mode .flow-line{background:#101827;color:#E5E7EB}
+</style>
+</head>
+<body>
+<header id="header">
+  <div class="logo-container" onclick="goHome()">
+    <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#138A96"/><stop offset="100%" style="stop-color:#4DD0E1"/></linearGradient></defs><circle cx="50" cy="50" r="46" fill="url(#grad1)"/><circle cx="30" cy="35" r="8" fill="#fff" opacity="0.8"/><circle cx="70" cy="35" r="8" fill="#fff" opacity="0.8"/><path d="M 35 50 Q 50 65 65 50" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/><text x="50" y="75" font-size="32" font-weight="700" fill="#fff" text-anchor="middle" font-family="Arial" opacity="0.9">SA</text></svg>
+    <div class="logo-text"><div class="brand">SADA</div><div class="tagline">ANALYTICS</div></div>
+  </div>
+  <div class="header-center" id="headerTitle">Sistema Integral de Análisis Académico</div>
+  <div class="header-right" id="headerUser" style="display:none">
+    <div class="user-info"><span id="userName" style="font-weight:600">Usuario</span><span class="user-role-display" id="userRole">ROL</span><div class="user-avatar" id="userAvatar">U</div></div>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Cambiar modo día/noche">🌙 Noche</button><button class="btn-logout" onclick="logout()">Salir</button>
+  </div>
+</header>
+<section id="login-page">
+  <div class="login-blob" style="width:400px;height:400px;left:-100px;top:-80px"></div><div class="login-blob" style="width:300px;height:300px;right:-60px;bottom:-40px"></div>
+  <div class="login-wrapper">
+    <div class="login-logo"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#138A96"/><stop offset="100%" style="stop-color:#4DD0E1"/></linearGradient></defs><circle cx="50" cy="50" r="48" fill="url(#grad2)"/><circle cx="32" cy="38" r="9" fill="#fff" opacity="0.85"/><circle cx="68" cy="38" r="9" fill="#fff" opacity="0.85"/><path d="M 38 55 Q 50 68 62 55" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/></svg></div>
+    <h1 class="login-title">SADA</h1>
+    <p class="login-sub">Plataforma de Análisis del Desempeño y Orientación Vocacional Académica</p>
+    <div class="form-tabs"><div class="form-tab active" onclick="switchTab('login',this)">Iniciar sesión</div><div class="form-tab" onclick="switchTab('register',this)">Registrarse</div></div>
+    <div id="login-form">
+      <div class="form-group"><label class="form-label">📧 Correo institucional</label><input class="form-input" id="loginEmail" type="email" placeholder="ejemplo@escuela.edu.pe"></div>
+      <div class="form-group"><label class="form-label">🔐 Contraseña</label><input class="form-input" id="loginPass" type="password" placeholder="••••••••"></div>
+      <button class="btn-login" onclick="doLogin()">Iniciar sesión</button>
+      <div class="login-link"><a href="#" onclick="showModal('forgotPassword');return false;">¿Olvidaste tu contraseña?</a></div>
+      <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--light);font-size:12px;color:var(--gray);text-align:center"><b>Credenciales de prueba:</b><br>📧 admin@sada.edu.pe • 🔑 Admin123</div>
+    </div>
+    <div id="register-form" class="hidden">
+      <div class="form-group"><label class="form-label">👤 Nombre completo</label><input class="form-input" id="regName" type="text" placeholder="Tu nombre completo"></div>
+      <div class="form-group"><label class="form-label">📧 Correo institucional</label><input class="form-input" id="regEmail" type="email" placeholder="tu@escuela.edu.pe"></div>
+      <div class="form-group"><label class="form-label">👥 Rol</label><select class="form-input" id="regRole"><option value="estudiante">Estudiante</option></select><div class="field-help">Por seguridad, docentes, padres y administradores se crean desde el panel Admin.</div></div>
+      <div class="form-group"><label class="form-label">🏫 Institución</label><select class="form-input" id="regInst"><option value="">Selecciona</option></select></div>
+      <div class="form-group"><label class="form-label">🔐 Contraseña</label><input class="form-input" id="regPass" type="password" placeholder="Mínimo 6 caracteres"></div>
+      <div class="form-group"><label class="form-label">🔐 Confirmar contraseña</label><input class="form-input" id="regPassConf" type="password" placeholder="Repite tu contraseña"></div>
+      <button class="btn-login" onclick="doRegister()">Crear cuenta</button>
+    </div>
+  </div>
+</section>
+<section id="app-page" class="hidden"><button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰ Menú de módulos</button><div class="app-container">
+  <nav class="sidebar">
+    <div class="sidebar-title">Menú</div>
+    <button class="nav-item active" data-page="dashboard" onclick="goPage('dashboard')"><span class="nav-icon">📊</span><span>Dashboard</span></button>
+    <button class="nav-item" data-page="instituciones" onclick="goPage('instituciones')"><span class="nav-icon">🏫</span><span>Instituciones</span></button>
+    <button class="nav-item" data-page="usuarios" onclick="goPage('usuarios')"><span class="nav-icon">👥</span><span>Usuarios</span></button>
+    <button class="nav-item" data-page="cursos" onclick="goPage('cursos')"><span class="nav-icon">📚</span><span>Cursos</span></button>
+    <button class="nav-item" data-page="notas" onclick="goPage('notas')"><span class="nav-icon">📝</span><span>Notas</span></button>
+    <button class="nav-item" data-page="observaciones" onclick="goPage('observaciones')"><span class="nav-icon">🗒️</span><span>Observaciones</span></button>
+    <button class="nav-item" data-page="analisis" onclick="goPage('analisis')"><span class="nav-icon">📈</span><span>Análisis</span></button>
+    <button class="nav-item" data-page="reportes" onclick="goPage('reportes')"><span class="nav-icon">📑</span><span>Reportes</span></button>
+    <button class="nav-item" data-page="orientacion" onclick="goPage('orientacion')"><span class="nav-icon">🎯</span><span>Orientación</span></button>
+    <button class="nav-item" data-page="integraciones" onclick="goPage('integraciones')"><span class="nav-icon">🔗</span><span>Integraciones</span></button>
+    <div class="sidebar-title" id="adminSectionTitle" style="margin-top:24px">Administración</div>
+    <button class="nav-item" data-page="config" onclick="goPage('config')" id="adminBtn"><span class="nav-icon">⚙️</span><span>Configuración</span></button>
+  </nav>
+  <main class="main-content">
+    <div id="page-dashboard">
+      <div class="page-header"><div><h1 class="page-title">📊 Dashboard</h1><p class="page-sub">Resumen general del sistema académico</p></div></div>
+      <div id="dashboardUxPanel" class="ux-panel"></div>
+      <div id="vocationalMainPanel" class="voc-hero"></div>
+      <!-- Dashboard simplificado: se eliminan bloques redundantes de ruta/objetivo. -->
+      <div class="grid grid-4">
+        <div class="kpi" id="kpiInst"><div class="kpi-value" id="kInst">0</div><div class="kpi-label" id="kInstLabel">Instituciones</div></div>
+        <div class="kpi teal" id="kpiUsuarios"><div class="kpi-value" id="kUsuarios">0</div><div class="kpi-label" id="kUsuariosLabel">Usuarios</div></div>
+        <div class="kpi purple" id="kpiCursos"><div class="kpi-value" id="kCursos">0</div><div class="kpi-label" id="kCursosLabel">Cursos visibles</div></div>
+        <div class="kpi mag" id="kpiNotas"><div class="kpi-value" id="kNotas">0</div><div class="kpi-label" id="kNotasLabel">Notas visibles</div></div>
+        <div class="kpi amber actionable" onclick="goPage('analisis')"><div class="kpi-value" id="kAnalisis">0</div><div class="kpi-label">Análisis</div></div>
+        <div class="kpi green actionable" id="kpiReportes" onclick="goPage('reportes')"><div class="kpi-value" id="kReportes">0</div><div class="kpi-label">Reportes oficiales</div></div>
+      </div>
+      <!-- Accesos recomendados y módulos se consolidan en el panel de bienvenida. -->
+    </div>
+    <div id="page-instituciones" class="hidden">
+      <div class="page-header"><div><h1 class="page-title">🏫 Instituciones Educativas</h1><p class="page-sub">Registro de colegios y entidades del sistema</p></div><button class="btn-primary" onclick="showModal('newInstitution')">+ Nueva institución</button></div>
+      <div class="card"><div class="table-container"><table class="data-table"><thead><tr><th>Código</th><th>Nombre</th><th>Tipo</th><th>Ubicación</th><th>Acciones</th></tr></thead><tbody id="instBody"></tbody></table></div></div>
+    </div>
+    <div id="page-usuarios" class="hidden">
+      <div class="page-header"><div><h1 class="page-title">👥 Gestión de Usuarios</h1><p class="page-sub">Estudiantes, docentes, padres y administradores</p></div><button class="btn-primary" onclick="showModal('newUser')">+ Nuevo usuario</button></div>
+      <div class="card">
+        <div class="bulk-box admin-only">
+          <div><b>📤 Carga masiva de alumnos</b><br><span class="mini-text"><b>Solo Administrador.</b> Sube un Excel/CSV con alumnos, cursos, notas iniciales, correo y contraseña temporal. El docente entrega la base al administrador y el administrador la carga al sistema.</span></div>
+          <div class="bulk-actions"><input class="file-input" type="file" id="bulkStudentsExcel" accept=".xlsx,.xls,.csv" onchange="importAcademicExcel(this,'students')"><button class="btn-secondary btn-sm" onclick="clearImportBox('bulkStudentsExcel')">Limpiar</button></div>
+        </div>
+        <div id="studentImportResult"></div>
+        <input class="input-search" id="searchUsers" placeholder="🔍 Buscar por nombre o correo..." oninput="renderUsers()"><div id="userList" style="margin-top:20px"></div></div>
+    </div>
+    <div id="page-cursos" class="hidden">
+      <div class="page-header"><div><h1 class="page-title">📚 Gestión de Cursos</h1><p class="page-sub">Asignaturas y docentes asignados</p></div><button class="btn-primary" onclick="showModal('newCurso')">+ Nuevo curso</button></div>
+      <div class="card"><div class="table-container"><table class="data-table"><thead><tr><th>Código</th><th>Nombre</th><th>Docente asignado</th><th>Periodo</th><th>Acciones</th></tr></thead><tbody id="cursosBody"></tbody></table></div></div>
+      <div class="card"><h3>Ficha de cursos visibles</h3><p class="mini-text" id="courseRoleNote">Aquí verás el detalle de los cursos según tu rol.</p><div class="course-grid" id="courseCards"></div></div>
+    </div>
+    <div id="page-notas" class="hidden">
+      <div class="page-header"><div><h1 class="page-title">📝 Registro de Notas</h1><p class="page-sub">Calificaciones por estudiante y curso</p></div><button class="btn-primary" onclick="showModal('newNota')">+ Registrar nota</button></div>
+      <div class="card">
+        <div class="bulk-box admin-only">
+          <div><b>📥 Cargar notas por Excel/CSV</b><br><span class="mini-text"><b>Solo Administrador.</b> El docente entrega la base de notas al administrador; el administrador la carga para evitar errores de acceso y duplicidad.</span></div>
+          <div class="bulk-actions"><input class="file-input" type="file" id="bulkGradesExcel" accept=".xlsx,.xls,.csv" onchange="importAcademicExcel(this,'grades')"><button class="btn-secondary btn-sm" onclick="clearImportBox('bulkGradesExcel')">Limpiar</button></div>
+        </div>
+        <div id="gradesImportResult"></div>
+        <div class="toolbar"><input class="input-search" id="searchNotas" placeholder="🔍 Buscar por estudiante, curso o evaluación..." oninput="renderNotas()"><span class="muted">Filtra rápidamente las notas visibles para tu rol.</span><span class="mobile-hint">En celular puedes deslizar la tabla hacia los lados.</span></div><div class="table-container"><table class="data-table"><thead><tr><th>Código</th><th>Estudiante</th><th>Curso</th><th>Nota</th><th>Evaluación</th><th>Fecha</th><th>Acción</th></tr></thead><tbody id="notasBody"></tbody></table></div></div>
+    </div>
+    <div id="page-observaciones" class="hidden">
+      <div class="page-header"><div><h1 class="page-title">🗒️ Observaciones a Alumnos</h1><p class="page-sub">Comentarios de seguimiento del docente sobre cada estudiante</p></div><button class="btn-primary obs-manage-only" onclick="showModal('newObservacion')">+ Nueva observación</button></div>
+      <div id="obsRoleNote" class="role-note"></div>
+      <div class="card">
+        <div class="toolbar"><input class="input-search" id="searchObs" placeholder="🔍 Buscar por estudiante, tipo o texto..." oninput="renderObservaciones()"><span class="muted">Solo el docente autor o el Administrador pueden editar/eliminar.</span><span class="mobile-hint">En celular puedes deslizar la tabla hacia los lados.</span></div>
+        <div class="table-container"><table class="data-table"><thead><tr><th>Código</th><th>Estudiante</th><th>Tipo</th><th>Observación</th><th>Docente</th><th>Fecha</th><th>Acción</th></tr></thead><tbody id="obsBody"></tbody></table></div>
+      </div>
+    </div>
+    <div id="page-analisis" class="hidden">
+      <div class="page-header"><div><h1 class="page-title">📈 Análisis de Desempeño</h1><p class="page-sub">Cálculo automático, diagnóstico académico y plan semanal</p></div><button class="btn-primary" onclick="generateAnalysis()">🔄 Generar análisis</button></div>
+      <div id="analisisRoleNote" class="role-note"></div><div class="toolbar"><button class="btn-pdf" onclick="openPdfScopeModal()">📥 Descargar análisis en PDF</button><span class="muted">El PDF respeta el alcance de tu rol: Admin ve todo, Docente sus alumnos, Estudiante solo su información y Padre sus hijos. Si hay más de un alumno visible, se preguntará si deseas descargar todos o uno en específico.</span></div>
+      <div class="analysis-tabs">
+        <button class="analysis-tab active" data-analysis-tab="resumen" onclick="switchAnalysisTab('resumen')">📈 Resumen académico</button>
+        <button class="analysis-tab" data-analysis-tab="plan" onclick="switchAnalysisTab('plan')">📊 Plan de mejora semanal</button>
+      </div>
+      <div id="analysis-tab-resumen" class="analysis-panel">
+        <div class="card"><div class="logic-box"><h4>¿Qué datos analiza esta pestaña?</h4><p class="mini-text">El promedio se calcula con las notas visibles del estudiante. La tendencia compara la primera y la última nota registrada. El riesgo considera promedio, cantidad de notas desaprobadas y cursos evaluados. Esta información sirve como referencia académica, no reemplaza el criterio del docente o tutor.</p></div><div class="table-container"><table class="data-table"><thead><tr><th>Código</th><th>Estudiante</th><th>Promedio</th><th>Base del promedio</th><th>Cursos evaluados</th><th>Tendencia</th><th>Riesgo</th><th>Consejo</th></tr></thead><tbody id="analisisBody"></tbody></table></div></div>
+      </div>
+      <div id="analysis-tab-plan" class="analysis-panel hidden">
+        <div class="card">
+          <div class="page-header" style="margin-bottom:18px"><div><h3>📊 Plan de Mejora Semanal</h3><p class="page-sub">Seguimiento visual del desempeño y acciones concretas para mejorar</p></div><button class="btn-plan" onclick="downloadPlanPDF()">📄 Descargar plan PDF</button></div>
+          <div class="logic-box">
+            <h4>¿Cómo se calcula este plan?</h4>
+            <p class="mini-text">El gráfico de barras usa las notas visibles del estudiante ordenadas por fecha y las agrupa en semanas académicas. Cada barra representa el promedio de esa semana. El plan sugiere acciones según desempeño: reforzar cursos bajos, mantener hábitos si el rendimiento es bueno y alertar si hay riesgo.</p>
+          </div>
+          <div id="planStudentPicker">
+            <label class="form-label">Selecciona un estudiante</label>
+            <select class="form-input" id="planStudentSelect" onchange="renderWeeklyPlan()" style="margin-bottom:16px;cursor:pointer"><option value="">Elige un estudiante...</option></select>
+          </div>
+          <div id="planAutoStudentNote" class="auto-student-note hidden"></div>
+          <div id="weeklyPlanContent"><p style="color:var(--gray);padding:40px;text-align:center">Selecciona un estudiante para ver su plan de mejora semanal.</p></div>
+        </div>
+        <div class="card">
+          <h3>Detalles que marcan la diferencia</h3>
+          <div class="idea-grid">
+            <div class="idea-card"><b>🚦 Semáforo académico</b><p>Rojo, amarillo o verde para entender rápido qué cursos requieren atención.</p></div>
+            <div class="idea-card"><b>📅 Rutina semanal</b><p>Acciones simples por semana: repasar, practicar, pedir ayuda y revisar avances.</p></div>
+            <div class="idea-card"><b>👨‍👩‍👧 Alerta familiar</b><p>El reporte PDF permite compartir avances con padres o tutores sin entrar como admin.</p></div>
+            <div class="idea-card"><b>🎯 Meta próxima</b><p>El sistema sugiere una meta realista: subir 1 o 2 puntos en cursos críticos.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="page-reportes" class="hidden">
+      <div class="page-header"><div><h1 class="page-title">📑 Reportes Institucionales</h1><p class="page-sub">Módulo administrativo: generación oficial y exportación. Para alumnos, padres y docentes, la descarga PDF está dentro de Análisis.</p></div><div style="display:flex;gap:12px;flex-wrap:wrap"><button class="btn-primary admin-report-action" onclick="generateReports()">📄 Generar reportes</button><button class="btn-secondary admin-report-action" onclick="exportReport()">📥 Exportar Excel</button><button class="btn-pdf" onclick="openPdfScopeModal()">📄 Descargar PDF</button></div></div>
+      <div id="reportesRoleNote" class="role-note"></div><div class="card"><div class="toolbar"><span class="muted">El PDF descarga la información visible según tu rol. Estudiantes y padres pueden compartirlo sin permisos de administración.</span></div><div class="table-container"><table class="data-table"><thead><tr><th>Código</th><th>Análisis vinculado</th><th>Estudiante</th><th>Tipo</th><th>Formato</th><th>Fecha de generación</th></tr></thead><tbody id="reportesBody"></tbody></table></div></div>
+    </div>
+    <div id="page-orientacion" class="hidden">
+      <div class="page-header"><div><h1 class="page-title">🎯 Orientación Vocacional</h1><p class="page-sub">Recomendación personalizada por área de afinidad</p></div></div>
+      <div class="card">
+        <div class="logic-box">
+          <h4>Cómo funciona la orientación vocacional</h4>
+          <p class="mini-text">SADA estima áreas de afinidad usando las notas del estudiante por curso. Por ejemplo: Matemática, CTA y Computación fortalecen Ingeniería/Tecnología; Comunicación y Ciencias Sociales fortalecen Humanidades; Arte y Comunicación fortalecen Artes. También se muestra una frase motivacional personalizada para reforzar el esfuerzo.</p>
+        </div>
+        <div id="orientationStudentPicker">
+          <label class="form-label">Selecciona un estudiante</label>
+          <select class="form-input" id="stuSelect" onchange="generateVocationalGuide()" style="margin-bottom:12px;cursor:pointer"><option value="">Elige un estudiante...</option></select>
+        </div>
+        <div id="orientationAutoStudentNote" class="auto-student-note hidden"></div>
+        <div class="orientation-actions"><button class="btn-pdf" onclick="downloadOrientationPDF()">📄 Descargar orientación PDF</button><button class="btn-ghost" onclick="generateVocationalGuide()">🔄 Actualizar orientación</button></div>
+        <div id="vocationalGuide" style="color:var(--gray);padding:40px;text-align:center">Selecciona un estudiante para ver su perfil vocacional</div>
+        <div id="recsTable" style="margin-top:20px"></div>
+      </div>
+    </div>
+
+    <div id="page-integraciones" class="hidden">
+      <div class="page-header"><div><h1 class="page-title">🔗 Centro de Integraciones y MVP</h1><p class="page-sub">Simulación visual de Moodle, Canvas, LTI/xAPI, motor de análisis y alcance del prototipo.</p></div></div>
+      <div class="card">
+        <h3>Simulación funcional del flujo LMS</h3>
+        <p class="mini-text">Esta pantalla queda solo para <b>Administrador</b>. No es una página operativa para alumno, padre ni docente. Su objetivo es demostrar en la sustentación cómo SADA recibiría cursos/notas desde plataformas externas y cómo luego genera análisis y orientación vocacional.</p>
+        <div class="info-grid integration-grid">
+          <div class="info-card integration-card">
+            <b>🎓 Moodle</b>
+            <p class="mini-text">Plataforma educativa desde donde SADA podría importar cursos, tareas y calificaciones.</p>
+            <div class="sync-status" id="moodleStatus">Estado: listo para simular</div>
+            <div class="progress"><div id="moodleBar" class="progress-bar" style="width:0%"></div></div>
+            <button class="btn-primary btn-sm" onclick="simulateLmsSync('moodle')">🔄 Sincronizar Moodle</button>
+          </div>
+          <div class="info-card integration-card">
+            <b>🧩 Canvas</b>
+            <p class="mini-text">Otra plataforma LMS. En producción se conectaría mediante API REST y/o LTI.</p>
+            <div class="sync-status" id="canvasStatus">Estado: listo para simular</div>
+            <div class="progress"><div id="canvasBar" class="progress-bar" style="width:0%"></div></div>
+            <button class="btn-primary btn-sm" onclick="simulateLmsSync('canvas')">🔄 Sincronizar Canvas</button>
+          </div>
+          <div class="info-card integration-card">
+            <b>🏛️ MINEDU / UGEL</b>
+            <p class="mini-text">Actor referencial del ecosistema educativo. No entrega notas en el MVP; sirve como marco curricular y entidad externa.</p>
+            <div class="sync-status"><span class="pill medio">Referencial</span> Competencias y estándares educativos</div>
+            <button class="btn-secondary btn-sm" onclick="showCurriculumSimulation()">Ver marco curricular</button>
+          </div>
+          <div class="info-card integration-card">
+            <b>🤖 Motor IA / ML</b>
+            <p class="mini-text">En el MVP usa reglas simples con notas. En producción sería un modelo predictivo entrenado.</p>
+            <div class="sync-status" id="mlStatus">Motor en espera</div>
+            <div class="progress"><div id="mlBar" class="progress-bar" style="width:0%"></div></div>
+            <button class="btn-primary btn-sm" onclick="simulateMlEngine()">▶ Ejecutar análisis vocacional</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Resultado de la simulación</h3>
+        <div id="integrationResult" class="simulation-output">Presiona una sincronización para ver resultados simulados.</div>
+      </div>
+      <div class="card">
+        <h3>Flujo de datos esperado</h3>
+        <div class="flow-line">LMS / Institución → cursos y notas → análisis de desempeño → perfil vocacional → PDF autorizado</div>
+        <p class="mini-text" style="margin-top:14px"><b>Nota MVP:</b> este HTML no consume APIs reales. Usa datos de prueba en LocalStorage para demostrar el recorrido funcional. En producción se conectaría a Moodle/Canvas mediante LTI/xAPI o API REST, con backend seguro y base de datos.</p>
+      </div>
+      <div class="card">
+        <h3>Privacidad y alcance del prototipo</h3>
+        <div class="info-grid">
+          <div class="info-card"><b>🔐 Privacidad</b><p class="mini-text">El prototipo valida permisos por rol. En producción debe usar backend, hash de contraseñas, cifrado y protección de datos de menores.</p></div>
+          <div class="info-card"><b>🧩 Alcance MVP</b><p class="mini-text">Demuestra usuarios, cursos, notas, análisis, orientación vocacional, PDF e integración simulada. No reemplaza una arquitectura cloud real.</p></div>
+          <div class="info-card"><b>🗂️ Trazabilidad Word</b><p class="mini-text">Conserva los requerimientos del documento: dashboard, reportes, orientación vocacional, roles, seguridad básica e interoperabilidad LMS.</p></div>
+          <div class="info-card"><b>🚀 Futuro productivo</b><p class="mini-text">Frontend + API backend + PostgreSQL + autenticación segura + cloud + conectores LMS + motor ML.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="page-config" class="hidden">
+      <div class="page-header"><div><h1 class="page-title">⚙️ Configuración</h1><p class="page-sub">Administración del sistema</p></div></div>
+      <div class="card"><h3>Gestión de usuarios</h3><button class="btn-primary" onclick="showModal('newUser')" style="margin-bottom:20px">+ Nuevo usuario</button><div id="configUserList"></div></div>
+    </div>
+  </main>
+</div></section>
+<div id="modal-forgot" class="modal"><div class="modal-content"><h2 class="modal-title">🔐 Recuperar contraseña</h2><div class="modal-body">Ingresa tu correo institucional para recibir un enlace de recuperación.<input class="form-input" id="forgotEmail" type="email" placeholder="tu@escuela.edu.pe" style="margin-top:14px"></div><div class="modal-buttons"><button class="btn-cancel" onclick="closeModal('forgotPassword')">Cancelar</button><button class="btn-submit" onclick="doForgot()">Enviar enlace</button></div></div></div>
+<div id="modal-newuser" class="modal"><div class="modal-content"><h2 class="modal-title">➕ Nuevo usuario</h2><div class="modal-body">
+  <div class="form-group"><label class="form-label">Nombre completo</label><input class="form-input" id="newUserName" type="text" placeholder="Nombre del usuario"></div>
+  <div class="form-group"><label class="form-label">Correo institucional</label><input class="form-input" id="newUserEmail" type="email" placeholder="correo@escuela.edu.pe"></div>
+  <div class="form-group"><label class="form-label">Rol</label><select class="form-input" id="newUserRole"><option value="estudiante">Estudiante</option><option value="docente">Docente</option><option value="padre">Padre de familia</option><option value="admin">Administrador</option></select></div>
+  <div class="form-group"><label class="form-label">Institución</label><select class="form-input" id="newUserInst"></select></div>
+  <div class="form-group"><label class="form-label">Contraseña temporal</label><input class="form-input" id="newUserPass" type="text" value="Temp123" readonly style="background:var(--light);cursor:not-allowed"></div>
+</div><div class="modal-buttons"><button class="btn-cancel" onclick="closeModal('newUser')">Cancelar</button><button class="btn-submit" onclick="createUser()">Crear usuario</button></div></div></div>
+<div id="modal-newinst" class="modal"><div class="modal-content"><h2 class="modal-title">🏫 Nueva institución</h2><div class="modal-body">
+  <div class="form-group"><label class="form-label">Nombre de la institución</label><input class="form-input" id="newInstName" type="text" placeholder="Ej: I.E. Innova Schools"></div>
+  <div class="form-group"><label class="form-label">Tipo</label><select class="form-input" id="newInstType"><option value="Colegio">Colegio</option><option value="Academia">Academia</option><option value="Instituto">Instituto</option><option value="Universidad">Universidad</option></select></div>
+  <div class="form-group"><label class="form-label">Ubicación</label><input class="form-input" id="newInstLocation" type="text" placeholder="Ciudad, región"></div>
+</div><div class="modal-buttons"><button class="btn-cancel" onclick="closeModal('newInstitution')">Cancelar</button><button class="btn-submit" onclick="createInstitution()">Crear institución</button></div></div></div>
+<div id="modal-newcurso" class="modal"><div class="modal-content"><h2 class="modal-title">📚 Nuevo curso</h2><div class="modal-body">
+  <div class="form-group"><label class="form-label">Nombre del curso</label><input class="form-input" id="newCursoName" type="text" placeholder="Ej: Matemática"></div>
+  <div class="form-group"><label class="form-label">Docente responsable</label><select class="form-input" id="newCursoDocente"></select></div>
+  <div class="form-group"><label class="form-label">Periodo académico</label><input class="form-input" id="newCursoPeriodo" type="text" value="2026-I"></div>
+</div><div class="modal-buttons"><button class="btn-cancel" onclick="closeModal('newCurso')">Cancelar</button><button class="btn-submit" onclick="createCurso()">Crear curso</button></div></div></div>
+<div id="modal-newnota" class="modal"><div class="modal-content"><h2 class="modal-title">📝 Registrar nota</h2><div class="modal-body">
+  <input type="hidden" id="notaEditId" value="">
+  <div class="form-group"><label class="form-label">Estudiante</label><select class="form-input" id="notaStudent"></select></div>
+  <div class="form-group"><label class="form-label">Curso</label><select class="form-input" id="notaCurso"></select></div>
+  <div class="form-group"><label class="form-label">Calificación (0 - 20)</label><input class="form-input" id="notaValue" type="number" min="0" max="20" step="0.5" placeholder="15"></div>
+  <div class="form-group"><label class="form-label">Tipo de evaluación</label><select class="form-input" id="notaEval"><option value="Parcial">Parcial</option><option value="Final">Final</option><option value="Práctica">Práctica</option><option value="Tarea">Tarea</option></select></div>
+</div><div class="modal-buttons"><button class="btn-cancel" onclick="cancelNotaModal()">Cancelar</button><button class="btn-submit" id="notaSubmitBtn" onclick="createNota()">Registrar nota</button></div></div></div>
+<div id="modal-newobs" class="modal"><div class="modal-content"><h2 class="modal-title">🗒️ Nueva observación</h2><div class="modal-body">
+  <input type="hidden" id="obsEditId" value="">
+  <div class="form-group"><label class="form-label">Estudiante</label><select class="form-input" id="obsStudent"></select></div>
+  <div class="form-group"><label class="form-label">Tipo de observación</label><select class="form-input" id="obsTipo"><option value="Positiva">Positiva</option><option value="Área de mejora">Área de mejora</option><option value="Conducta">Conducta</option><option value="Asistencia">Asistencia</option></select></div>
+  <div class="form-group"><label class="form-label">Observación</label><textarea class="form-input" id="obsTexto" rows="4" placeholder="Escribe el comentario de seguimiento para el estudiante..."></textarea></div>
+  <div class="field-help">Esta observación quedará asociada a tu cuenta docente y será visible para el estudiante, su padre/tutor y el Administrador.</div>
+</div><div class="modal-buttons"><button class="btn-cancel" onclick="cancelObsModal()">Cancelar</button><button class="btn-submit" id="obsSubmitBtn" onclick="createObservacion()">Guardar observación</button></div></div></div>
+<div id="modal-pdfscope" class="modal"><div class="modal-content"><h2 class="modal-title">📥 Descargar informe en PDF</h2><div class="modal-body">
+  <div class="field-help" style="margin-bottom:10px">Elige si deseas descargar el informe de todos los alumnos visibles para tu rol o solo de un alumno específico.</div>
+  <div class="form-group"><label class="form-label">Alcance de la descarga</label><select class="form-input" id="pdfScopeStudent"></select></div>
+</div><div class="modal-buttons"><button class="btn-cancel" onclick="closeModal('pdfScope')">Cancelar</button><button class="btn-submit" onclick="confirmPdfScopeDownload()">Descargar PDF</button></div></div></div>
+<div id="toast"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.mini.min.js">
+/* v24 QA: PDF offline por Blob, sin jsPDF/CDN; textos de análisis corregidos por rol. */
+/* v18 QA: menú estricto por rol validado también en responsive móvil; orientación autoselecciona estudiante cuando corresponde. */
+/* v17 QA: navegación estricta por rol; se eliminan módulos no operativos para estudiante/padre/docente y se conserva trazabilidad del Word en módulos administrativos. */
+</script>
+<script>
+/* v20 QA: se agrega matrícula académica simulada para que estudiantes creados por Admin aparezcan correctamente al Docente según sus cursos, aunque aún no tengan notas. */
+
+const DB={users:'SADA_USERS',institutions:'SADA_INSTITUTIONS',cursos:'SADA_CURSOS',notas:'SADA_NOTAS',matriculas:'SADA_MATRICULAS',analysis:'SADA_ANALYSIS',reportes:'SADA_REPORTES',recomendaciones:'SADA_RECOMENDACIONES',observaciones:'SADA_OBSERVACIONES',logged:'SADA_LOGGED_USER'};
+const DEF_INST=[{id_institucion:'I001',nombre:'I.E. Innova Schools',tipo:'Colegio',ubicacion:'Lima, Perú'},{id_institucion:'I002',nombre:'I.E. José Olaya',tipo:'Colegio',ubicacion:'Lima, Perú'}];
+const DEF_USERS=[
+{id_usuario:'U001',id_institucion:'I001',nombre:'Administrador SADA',email:'admin@sada.edu.pe',password:'Admin123',rol:'admin',activo:true,hijos:[]},
+{id_usuario:'U002',id_institucion:'I001',nombre:'Juan García López',email:'juan.garcia@escuela.edu.pe',password:'Pass123',rol:'docente',activo:true,hijos:[]},
+{id_usuario:'U003',id_institucion:'I001',nombre:'María López Pérez',email:'maria.lopez@familia.com.pe',password:'Pass123',rol:'padre',activo:true,hijos:['U004']},
+{id_usuario:'U004',id_institucion:'I001',nombre:'Carlos Quispe',email:'carlos@escuela.edu.pe',password:'Pass123',rol:'estudiante',activo:true,id_padre:'U003',hijos:[]},
+{id_usuario:'U005',id_institucion:'I002',nombre:'Ana Torres',email:'ana.torres@escuela.edu.pe',password:'Pass123',rol:'estudiante',activo:true,hijos:[]},
+{id_usuario:'U006',id_institucion:'I002',nombre:'Pedro Rojas',email:'pedro.rojas@escuela.edu.pe',password:'Pass123',rol:'docente',activo:true,hijos:[]}
+];
+const DEF_CURSOS=[{id_curso:'C001',id_docente:'U002',nombre:'Matemática',periodo:'2026-I'},{id_curso:'C002',id_docente:'U002',nombre:'Comunicación',periodo:'2026-I'},{id_curso:'C003',id_docente:'U002',nombre:'CTA',periodo:'2026-I'},{id_curso:'C004',id_docente:'U002',nombre:'Computación',periodo:'2026-I'},{id_curso:'C005',id_docente:'U006',nombre:'Ciencias Sociales',periodo:'2026-I'},{id_curso:'C006',id_docente:'U002',nombre:'Inglés',periodo:'2026-I'},{id_curso:'C007',id_docente:'U002',nombre:'Ed. Física',periodo:'2026-I'},{id_curso:'C008',id_docente:'U006',nombre:'Arte',periodo:'2026-I'}];
+const DEF_NOTAS=[{id_nota:'N001',id_usuario:'U004',id_curso:'C001',valor:16,evaluacion:'Parcial',fecha:'2026-04-15'},{id_nota:'N002',id_usuario:'U004',id_curso:'C002',valor:14,evaluacion:'Parcial',fecha:'2026-04-15'},{id_nota:'N003',id_usuario:'U004',id_curso:'C003',valor:17,evaluacion:'Parcial',fecha:'2026-04-16'},{id_nota:'N004',id_usuario:'U004',id_curso:'C004',valor:18,evaluacion:'Parcial',fecha:'2026-04-16'},{id_nota:'N005',id_usuario:'U004',id_curso:'C005',valor:13,evaluacion:'Parcial',fecha:'2026-04-17'},{id_nota:'N006',id_usuario:'U004',id_curso:'C006',valor:15,evaluacion:'Parcial',fecha:'2026-04-17'},{id_nota:'N007',id_usuario:'U004',id_curso:'C007',valor:16,evaluacion:'Parcial',fecha:'2026-04-18'},{id_nota:'N008',id_usuario:'U004',id_curso:'C008',valor:14,evaluacion:'Parcial',fecha:'2026-04-18'},{id_nota:'N009',id_usuario:'U005',id_curso:'C001',valor:12,evaluacion:'Parcial',fecha:'2026-04-15'},{id_nota:'N010',id_usuario:'U005',id_curso:'C002',valor:11,evaluacion:'Parcial',fecha:'2026-04-15'},{id_nota:'N011',id_usuario:'U005',id_curso:'C003',valor:10,evaluacion:'Parcial',fecha:'2026-04-16'},{id_nota:'N012',id_usuario:'U005',id_curso:'C004',valor:13,evaluacion:'Parcial',fecha:'2026-04-16'}];
+const PAGE_ACCESS={dashboard:['admin','docente','estudiante','padre'],instituciones:['admin'],usuarios:['admin','docente'],cursos:['admin','docente','estudiante','padre'],notas:['admin','docente','estudiante','padre'],observaciones:['admin','docente','estudiante','padre'],analisis:['admin','docente','estudiante','padre'],reportes:['admin'],orientacion:['admin','docente','estudiante','padre'],integraciones:['admin'],config:['admin']};
+const THEME_KEY='SADA_THEME_MODE';
+function applyTheme(mode){const dark=mode==='dark';document.body.classList.toggle('dark-mode',dark);const btn=document.getElementById('themeToggle');if(btn)btn.textContent=dark?'☀️ Día':'🌙 Noche';}
+function toggleTheme(){const next=document.body.classList.contains('dark-mode')?'light':'dark';localStorage.setItem(THEME_KEY,next);applyTheme(next);toast(next==='dark'?'Modo noche activado':'Modo día activado','ok');}
+function initTheme(){applyTheme(localStorage.getItem(THEME_KEY)||'light');}
+
+function g(k){try{return JSON.parse(localStorage.getItem(k)||'[]');}catch(e){return[];}}
+function s(k,v){localStorage.setItem(k,JSON.stringify(v));}
+function getInst(){return g(DB.institutions);}function getUsers(){return g(DB.users);}function getCursos(){return g(DB.cursos);}function getNotas(){return g(DB.notas);}function getMatriculas(){return g(DB.matriculas);}function getAnalysis(){return g(DB.analysis);}function getReportes(){return g(DB.reportes);}function getRecs(){return g(DB.recomendaciones);}function getObservaciones(){return g(DB.observaciones);}
+function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+function normEmail(e){return String(e||'').trim().toLowerCase();}
+function isValidEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);}
+function initDB(){try{const ru=localStorage.getItem(DB.users);if(ru){const u=JSON.parse(ru);if(u.length&&(u[0].role!==undefined||u[0].id!==undefined)){localStorage.removeItem(DB.users);localStorage.removeItem(DB.logged);}}}catch(e){localStorage.removeItem(DB.users);localStorage.removeItem(DB.logged);}if(!localStorage.getItem(DB.institutions))s(DB.institutions,DEF_INST);if(!localStorage.getItem(DB.users))s(DB.users,DEF_USERS);if(!localStorage.getItem(DB.cursos))s(DB.cursos,DEF_CURSOS);if(!localStorage.getItem(DB.notas))s(DB.notas,DEF_NOTAS);if(!localStorage.getItem(DB.matriculas))s(DB.matriculas,[]);[DB.analysis,DB.reportes,DB.recomendaciones,DB.observaciones].forEach(k=>{if(!localStorage.getItem(k))s(k,[]);});migrateDB();}
+function uniqueBy(arr,keyFn){const seen=new Set();return arr.filter(x=>{const k=keyFn(x);if(seen.has(k))return false;seen.add(k);return true;});}
+function inferMatriculasFromNotas(){return uniqueBy(getNotas().map(n=>({id_matricula:'M_'+n.id_usuario+'_'+n.id_curso,id_usuario:n.id_usuario,id_curso:n.id_curso,periodo:lookupName(getCursos(),'id_curso',n.id_curso,'periodo')||'2026-I',origen:'nota'})),m=>m.id_usuario+'|'+m.id_curso);}
+function ensureStudentEnrollments(studentId, mode='allCourses'){
+  let mats=getMatriculas();
+  const cursos=getCursos();
+  let target=cursos;
+  const student=getUsers().find(u=>u.id_usuario===studentId);
+  if(mode==='sameInstitution'&&student){
+    const docenteIds=getUsers().filter(u=>u.rol==='docente'&&u.id_institucion===student.id_institucion).map(u=>u.id_usuario);
+    const byInst=cursos.filter(c=>docenteIds.includes(c.id_docente));
+    if(byInst.length)target=byInst;
+  }
+  let changed=false;
+  target.forEach(c=>{
+    if(!mats.some(m=>m.id_usuario===studentId&&m.id_curso===c.id_curso)){
+      mats.push({id_matricula:newId('M'),id_usuario:studentId,id_curso:c.id_curso,periodo:c.periodo||'2026-I',origen:'auto'});
+      changed=true;
+    }
+  });
+  if(changed)s(DB.matriculas,mats);
+  return changed;
+}
+function ensureEnrollment(studentId,courseId){
+  let mats=getMatriculas();
+  if(!mats.some(m=>m.id_usuario===studentId&&m.id_curso===courseId)){
+    const curso=getCursos().find(c=>c.id_curso===courseId);
+    mats.push({id_matricula:newId('M'),id_usuario:studentId,id_curso:courseId,periodo:curso?.periodo||'2026-I',origen:'nota'});
+    s(DB.matriculas,mats);
+  }
+}
+function migrateDB(){
+  let changed=false;
+  let users=getUsers().map(u=>{let nu={...u};if(nu.activo===undefined){nu.activo=true;changed=true;}if(!Array.isArray(nu.hijos)){nu.hijos=[];changed=true;}if(nu.email){nu.email=normEmail(nu.email);}return nu;});
+  const padre=users.find(u=>u.rol==='padre');const est=users.find(u=>u.rol==='estudiante'&&u.id_usuario==='U004');
+  if(padre&&est&&!padre.hijos.includes(est.id_usuario)){padre.hijos.push(est.id_usuario);est.id_padre=padre.id_usuario;changed=true;}
+  if(changed)s(DB.users,users);
+  let cursos=getCursos();let cChanged=false;cursos=cursos.map(c=>{if(c.nombre==='CCSS'){cChanged=true;return {...c,nombre:'Ciencias Sociales'};}return c;});if(cChanged)s(DB.cursos,cursos);
+  let mats=getMatriculas();let mChanged=false;
+  inferMatriculasFromNotas().forEach(m=>{if(!mats.some(x=>x.id_usuario===m.id_usuario&&x.id_curso===m.id_curso)){mats.push(m);mChanged=true;}});
+  // Corrección importante v20: si un alumno fue creado por el Admin y aún no tiene notas/matrícula,
+  // se matricula automáticamente en cursos del prototipo para que Docente/Padre/Alumno lo puedan consultar.
+  users.filter(u=>u.rol==='estudiante').forEach(st=>{if(!mats.some(m=>m.id_usuario===st.id_usuario)){getCursos().forEach(c=>{mats.push({id_matricula:newId('M'),id_usuario:st.id_usuario,id_curso:c.id_curso,periodo:c.periodo||'2026-I',origen:'auto'});mChanged=true;});}});
+  if(mChanged)s(DB.matriculas,uniqueBy(mats,m=>m.id_usuario+'|'+m.id_curso));
+}
+function getLoggedUser(){try{const u=JSON.parse(localStorage.getItem(DB.logged)||'null');if(!u)return null;return getUsers().find(x=>x.id_usuario===u.id_usuario)||u;}catch(e){return null;}}
+function isAdmin(){const u=getLoggedUser();return !!u&&u.rol==='admin';}function isDocente(){const u=getLoggedUser();return !!u&&u.rol==='docente';}function isEstudiante(){const u=getLoggedUser();return !!u&&u.rol==='estudiante';}function isPadre(){const u=getLoggedUser();return !!u&&u.rol==='padre';}
+function canPage(page){const u=getLoggedUser();return !!(u&&PAGE_ACCESS[page]?.includes(u.rol));}
+function assertMenuConsistency(){
+  const u=getLoggedUser();if(!u)return;
+  const allowed=new Set(allowedPagesFor(u));
+  let errors=[];
+  document.querySelectorAll('.nav-item[data-page]').forEach(btn=>{
+    const p=btn.getAttribute('data-page');
+    const shouldShow=allowed.has(p);
+    const visible=!btn.classList.contains('hidden')&&btn.getAttribute('aria-hidden')!=='true'&&!btn.disabled;
+    if(shouldShow!==visible)errors.push(p);
+  });
+  if(errors.length){console.warn('Menú corregido automáticamente para rol',u.rol,errors);updateUIByRole();}
+}
+
+function requireLogin(){if(!getLoggedUser()){toast('Debes iniciar sesión','err');return false;}return true;}
+function requireAdmin(){if(!requireLogin())return false;if(!isAdmin()){toast('No tienes permiso para esta acción','err');return false;}return true;}
+function canManageGrades(){return isAdmin()||isDocente();}
+function canEditNota(n,user=getLoggedUser()){if(!user)return false;if(user.rol==='admin')return true;if(user.rol==='docente')return visibleCourseIdsFor(user).includes(n.id_curso)&&visibleStudentsFor(user).some(s=>s.id_usuario===n.id_usuario);return false;}
+function canManageObservations(){return isAdmin()||isDocente();}
+function visibleObservacionesFor(user=getLoggedUser()){
+  const obs=getObservaciones();if(!user)return[];
+  if(user.rol==='admin')return obs;
+  if(user.rol==='docente')return obs.filter(o=>o.id_docente===user.id_usuario);
+  if(user.rol==='estudiante')return obs.filter(o=>o.id_usuario===user.id_usuario);
+  if(user.rol==='padre'){const hijos=visibleStudentsFor(user).map(x=>x.id_usuario);return obs.filter(o=>hijos.includes(o.id_usuario));}
+  return[];
+}
+function canEditObservacion(o,user=getLoggedUser()){if(!user)return false;if(user.rol==='admin')return true;if(user.rol==='docente')return o.id_docente===user.id_usuario;return false;}
+function findUserByEmail(e){const email=normEmail(e);return getUsers().find(u=>normEmail(u.email)===email);}
+function lookupName(arr,idField,id,nameField){if(!arr||!arr.length)return'—';const o=arr.find(x=>x[idField]===id);return o?o[nameField]:'—';}
+function newId(p){return p+Date.now().toString(36)+Math.random().toString(36).substr(2,3);}
+function fmtDate(iso){if(!iso||!iso.includes('-'))return iso||'—';const[y,m,d]=iso.split('-');return d+'/'+m+'/'+y;}
+function toast(msg,type){const t=document.getElementById('toast');t.textContent=msg;t.className='show'+(type==='ok'?' t-ok':type==='err'?' t-err':type==='warn'?' t-warn':'');setTimeout(()=>t.className='',3500);}
+function teacherStudentIds(user){
+  if(!user||user.rol!=='docente')return[];
+  const idsCursos=getCursos().filter(c=>c.id_docente===user.id_usuario).map(c=>c.id_curso);
+  const fromMatriculas=getMatriculas().filter(m=>idsCursos.includes(m.id_curso)).map(m=>m.id_usuario);
+  const fromNotas=getNotas().filter(n=>idsCursos.includes(n.id_curso)).map(n=>n.id_usuario);
+  return [...new Set([...fromMatriculas,...fromNotas])];
+}
+function visibleStudentsFor(user=getLoggedUser()){
+  const users=getUsers();
+  if(!user)return[];
+  if(user.rol==='admin')return users.filter(u=>u.rol==='estudiante');
+  if(user.rol==='docente'){
+    const ids=teacherStudentIds(user);
+    return users.filter(u=>u.rol==='estudiante'&&ids.includes(u.id_usuario));
+  }
+  if(user.rol==='estudiante')return users.filter(u=>u.id_usuario===user.id_usuario);
+  if(user.rol==='padre')return users.filter(u=>user.hijos?.includes(u.id_usuario)||u.id_padre===user.id_usuario);
+  return[];
+}
+
+function contextStudentId(selectId){
+  const students=visibleStudentsFor();
+  const sel=selectId?document.getElementById(selectId):null;
+  if(students.length===1){
+    if(sel)sel.value=students[0].id_usuario;
+    return students[0].id_usuario;
+  }
+  return sel?.value||'';
+}
+function contextStudent(selectId){
+  const id=contextStudentId(selectId);
+  if(!id)return null;
+  return visibleStudentsFor().find(s=>s.id_usuario===id)||null;
+}
+function resetStudentDependentViews(){
+  const students=visibleStudentsFor();
+  const planBox=document.getElementById('weeklyPlanContent');
+  const guide=document.getElementById('vocationalGuide');
+  const recs=document.getElementById('recsTable');
+  if(students.length===1){
+    const s=students[0];
+    const stuSel=document.getElementById('stuSelect');
+    const planSel=document.getElementById('planStudentSelect');
+    if(stuSel)stuSel.value=s.id_usuario;
+    if(planSel)planSel.value=s.id_usuario;
+  }else{
+    if(planBox)planBox.innerHTML='<p style="color:var(--gray);padding:40px;text-align:center">Selecciona un estudiante para ver su plan de mejora semanal.</p>';
+    if(guide)guide.innerHTML='<p style="color:var(--gray);padding:40px;text-align:center">Selecciona un estudiante para ver su perfil vocacional</p>';
+    if(recs)recs.innerHTML='';
+  }
+}
+function visibleCourseIdsFor(user=getLoggedUser()){
+  const cursos=getCursos();
+  if(!user)return[];
+  if(user.rol==='admin')return cursos.map(c=>c.id_curso);
+  if(user.rol==='docente')return cursos.filter(c=>c.id_docente===user.id_usuario).map(c=>c.id_curso);
+  if(user.rol==='estudiante')return [...new Set([...getMatriculas().filter(m=>m.id_usuario===user.id_usuario).map(m=>m.id_curso),...getNotas().filter(n=>n.id_usuario===user.id_usuario).map(n=>n.id_curso)])];
+  if(user.rol==='padre'){
+    const hijos=visibleStudentsFor(user).map(x=>x.id_usuario);
+    return [...new Set([...getMatriculas().filter(m=>hijos.includes(m.id_usuario)).map(m=>m.id_curso),...getNotas().filter(n=>hijos.includes(n.id_usuario)).map(n=>n.id_curso)])];
+  }
+  return[];
+}
+function visibleNotasFor(user=getLoggedUser()){let notas=getNotas();if(!user)return[];if(user.rol==='admin')return notas;if(user.rol==='estudiante')return notas.filter(n=>n.id_usuario===user.id_usuario);if(user.rol==='padre'){const hijos=visibleStudentsFor(user).map(x=>x.id_usuario);return notas.filter(n=>hijos.includes(n.id_usuario));}if(user.rol==='docente'){const ids=visibleCourseIdsFor(user);return notas.filter(n=>ids.includes(n.id_curso));}return[];}
+function getStudentNotes(studentId){return getNotas().filter(n=>n.id_usuario===studentId).sort((a,b)=>String(a.fecha).localeCompare(String(b.fecha))).map(n=>({...n,valor:Number(n.valor)||0}));}
+function uniqueCourseNamesForNotes(notes){const cursos=getCursos();return [...new Set(notes.map(n=>lookupName(cursos,'id_curso',n.id_curso,'nombre')).filter(Boolean))];}
+function motivationForAnalysis(a,studentName='Estudiante'){
+  const name=(studentName||'Estudiante').split(' ')[0];
+  if(String(a.riesgo_desercion)==='Bajo'&&Number(a.promedio)>=15){return {nivel:'Potencial alto',frase:`${name}, mantén el ritmo: la constancia convierte el talento en resultados.`,ref:'“Todo lo puedo en Cristo que me fortalece.” — Filipenses 4:13'};}
+  if(String(a.riesgo_desercion)==='Alto'||Number(a.promedio)<11){return {nivel:'Necesita impulso',frase:`${name}, no te rindas: cada mejora pequeña cuenta y con esfuerzo se llega lejos.`,ref:'“El que pide, recibe; el que busca, encuentra.” — Mateo 7:8'};}
+  return {nivel:'En progreso',frase:`${name}, vas avanzando: sé persistente, ajusta tus hábitos y sigue construyendo tu mejor versión.`,ref:'“Somos lo que hacemos repetidamente; la excelencia, entonces, no es un acto sino un hábito.” — Aristóteles'};
+}
+function buildAnalysisForStudent(student){const notes=getStudentNotes(student.id_usuario);const vals=notes.map(n=>n.valor);const prom=vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0;let tendencia='Estable';if(vals.length>=2){const diff=vals[vals.length-1]-vals[0];tendencia=diff>1?'Ascendente':diff<-1?'Descendente':'Estable';}else tendencia=prom>15?'Ascendente':prom<10?'Descendente':'Estable';const desaprobadas=vals.filter(v=>v<11).length;const cursosEval=uniqueCourseNamesForNotes(notes);const riesgo=prom<11||desaprobadas>=3?'Alto':prom<13||desaprobadas>=1?'Medio':'Bajo';return{id_analisis:'AUTO_'+student.id_usuario,id_usuario:student.id_usuario,promedio:parseFloat(prom.toFixed(2)),tendencia,riesgo_desercion:riesgo,fecha:new Date().toISOString().split('T')[0],auto:true,cantidad_notas:vals.length,cursos_evaluados:cursosEval.length,detalle_cursos:cursosEval.join(', ')||'Sin cursos',desaprobadas};}
+function visibleAnalysisFor(user=getLoggedUser()){if(!user)return[];const saved=getAnalysis();const savedByStudent=new Map(saved.map(a=>[a.id_usuario,a]));return visibleStudentsFor(user).map(st=>savedByStudent.get(st.id_usuario)||buildAnalysisForStudent(st));}
+function visibleReportsFor(user=getLoggedUser()){if(!user)return[];let reportes=getReportes();const savedAnalysis=getAnalysis();const visibleIds=visibleStudentsFor(user).map(x=>x.id_usuario);reportes=reportes.map(r=>{if(!r.id_usuario&&r.id_analisis){const a=savedAnalysis.find(x=>x.id_analisis===r.id_analisis);if(a)return {...r,id_usuario:a.id_usuario};}return r;}).filter(r=>visibleIds.includes(r.id_usuario));if(reportes.length)return reportes;return visibleAnalysisFor(user).map(a=>({id_reporte:'VISTA_'+a.id_usuario,id_analisis:a.id_analisis,id_usuario:a.id_usuario,tipo:a.auto?'Vista de desempeño calculada':'Desempeño académico',formato:'Consulta en pantalla',fecha_gen:a.fecha||new Date().toISOString().split('T')[0],auto:true}));}
+function setRoleNote(id,adminText,viewerText){const el=document.getElementById(id);if(!el)return;el.innerHTML=isAdmin()?adminText:viewerText;}
+function doLogin(){const email=normEmail(document.getElementById('loginEmail').value),pass=document.getElementById('loginPass').value;if(!email||!pass){toast('Completa todos los campos','warn');return;}if(!isValidEmail(email)){toast('Ingresa un correo válido','warn');return;}const user=findUserByEmail(email);if(user&&user.password===pass&&user.activo!==false){localStorage.setItem(DB.logged,JSON.stringify({id_usuario:user.id_usuario,nombre:user.nombre,rol:user.rol}));goApp(user);toast('¡Bienvenido, '+user.nombre+'!','ok');}else toast('Correo, contraseña o usuario inactivo','err');}
+function doRegister(){const nombre=document.getElementById('regName').value.trim(),email=normEmail(document.getElementById('regEmail').value),rol=document.getElementById('regRole').value,id_inst=document.getElementById('regInst').value||'I001',pass=document.getElementById('regPass').value,pc=document.getElementById('regPassConf').value;if(!nombre||!email||!rol||!pass){toast('Completa todos los campos','warn');return;}if(rol!=='estudiante'){toast('Por seguridad, el registro público solo permite crear estudiantes. Docentes, padres y administradores deben ser creados por el Admin.','err');return;}if(!isValidEmail(email)){toast('Ingresa un correo válido','warn');return;}if(pass.length<6){toast('La contraseña debe tener al menos 6 caracteres','warn');return;}if(pass!==pc){toast('Las contraseñas no coinciden','err');return;}if(findUserByEmail(email)){toast('Ya existe una cuenta con ese correo','err');return;}const users=getUsers();const nu={id_usuario:newId('U'),id_institucion:id_inst,nombre:esc(nombre),email,rol:'estudiante',password:pass,activo:true,hijos:[]};users.push(nu);s(DB.users,users);ensureStudentEnrollments(nu.id_usuario,'sameInstitution');localStorage.setItem(DB.logged,JSON.stringify({id_usuario:nu.id_usuario,nombre:nu.nombre,rol:nu.rol}));goApp(nu);toast('Cuenta de estudiante creada y matriculada en cursos del prototipo','ok');}
+function doForgot(){const email=normEmail(document.getElementById('forgotEmail').value);if(!email){toast('Ingresa tu correo','warn');return;}if(!isValidEmail(email)){toast('Ingresa un correo válido','warn');return;}if(!findUserByEmail(email)){toast('No encontramos una cuenta con ese correo','err');return;}toast('Enlace de recuperación enviado a '+email,'ok');closeModal('forgotPassword');document.getElementById('forgotEmail').value='';}
+function logout(){localStorage.removeItem(DB.logged);document.getElementById('app-page').classList.add('hidden');document.getElementById('login-page').classList.remove('hidden');document.getElementById('headerTitle').style.display='none';document.getElementById('headerUser').style.display='none';document.getElementById('loginEmail').value='';document.getElementById('loginPass').value='';}
+function allowedPagesFor(user=getLoggedUser()){return user?Object.keys(PAGE_ACCESS).filter(p=>PAGE_ACCESS[p].includes(user.rol)):[];}
+function roleMenuLabel(role){return {admin:'Dashboard, Instituciones, Usuarios, Cursos, Notas, Observaciones, Análisis, Reportes oficiales, Orientación, Integraciones/MVP y Configuración',docente:'Dashboard, Alumnos, Mis cursos, Notas, Observaciones, Análisis y Orientación',estudiante:'Dashboard, Mis cursos, Mis notas, Observaciones de mis docentes, Mi análisis y Mi orientación vocacional',padre:'Dashboard, Cursos del alumno, Notas, Observaciones, Análisis y Orientación'}[role]||'Módulos disponibles';}
+function rolePageLabel(role,page){
+  const labels={
+    estudiante:{cursos:'Mis cursos',notas:'Mis notas',observaciones:'Observaciones',analisis:'Mi análisis',orientacion:'Mi orientación'},
+    padre:{cursos:'Cursos del alumno',notas:'Notas del alumno',observaciones:'Observaciones',analisis:'Análisis del alumno',orientacion:'Orientación del alumno'},
+    docente:{usuarios:'Alumnos',cursos:'Mis cursos',notas:'Notas',observaciones:'Observaciones',analisis:'Análisis',orientacion:'Orientación'},
+    admin:{usuarios:'Usuarios',cursos:'Cursos',notas:'Notas',observaciones:'Observaciones',analisis:'Análisis',orientacion:'Orientación',reportes:'Reportes oficiales',instituciones:'Instituciones',integraciones:'Integraciones/MVP',config:'Configuración'}
+  };
+  return (labels[role]&&labels[role][page])||({dashboard:'Dashboard'}[page])||page;
+}
+function applyRoleBodyClass(role){document.body.classList.remove('role-admin','role-docente','role-estudiante','role-padre');if(role)document.body.classList.add('role-'+role);}
+function updateStudentPickerVisibility(){
+  const u=getLoggedUser();if(!u)return;
+  const students=visibleStudentsFor(u);
+  const showPicker=(u.rol==='admin'||u.rol==='docente'||(u.rol==='padre'&&students.length>1));
+  const stuPicker=document.getElementById('orientationStudentPicker');const stuNote=document.getElementById('orientationAutoStudentNote');
+  if(stuPicker)stuPicker.classList.toggle('hidden',!showPicker);
+  if(stuNote){stuNote.classList.toggle('hidden',showPicker||students.length!==1);if(!showPicker&&students.length===1)stuNote.textContent='Mostrando automáticamente la orientación de '+students[0].nombre+'.';}
+  const planPicker=document.getElementById('planStudentPicker');const planNote=document.getElementById('planAutoStudentNote');
+  if(planPicker)planPicker.classList.toggle('hidden',!showPicker);
+  if(planNote){planNote.classList.toggle('hidden',showPicker||students.length!==1);if(!showPicker&&students.length===1)planNote.textContent='Mostrando automáticamente el plan de mejora de '+students[0].nombre+'.';}
+}
+function updateUIByRole(){
+  const u=getLoggedUser();if(!u)return;
+  applyRoleBodyClass(u.rol);
+  const allowed=new Set(allowedPagesFor(u));
+  const adminTitle=document.getElementById('adminSectionTitle');
+  if(adminTitle)adminTitle.style.display=u.rol==='admin'?'block':'none';
+  document.querySelectorAll('.nav-item[data-page]').forEach(btn=>{
+    const p=btn.getAttribute('data-page');
+    const can=allowed.has(p);
+    btn.classList.toggle('hidden',!can);
+    btn.setAttribute('aria-hidden',can?'false':'true');
+    btn.disabled=!can;
+    const label=btn.querySelector('span:nth-child(2)');
+    if(label)label.textContent=rolePageLabel(u.rol,p);
+  });
+  const note=document.getElementById('roleDashboardNote');
+  if(note)note.innerHTML=`<b>Módulos visibles para ${esc(u.rol)}:</b> ${esc(roleMenuLabel(u.rol))}. Las páginas sin permiso no se muestran en el menú ni se pueden abrir por acceso directo.`;
+  const usuariosTitle=document.querySelector('#page-usuarios .page-title');
+  const usuariosSub=document.querySelector('#page-usuarios .page-sub');
+  if(usuariosTitle&&usuariosSub){if(u.rol==='docente'){usuariosTitle.textContent='👥 Alumnos de mis cursos';usuariosSub.textContent='Consulta solo los estudiantes relacionados con los cursos que dictas.';}else{usuariosTitle.textContent='👥 Gestión de Usuarios';usuariosSub.textContent='Estudiantes, docentes, padres y administradores';}}
+  const cursosTitle=document.querySelector('#page-cursos .page-title');
+  const cursosSub=document.querySelector('#page-cursos .page-sub');
+  if(cursosTitle&&cursosSub){if(u.rol==='estudiante'){cursosTitle.textContent='📚 Mis cursos';cursosSub.textContent='Cursos que llevas, docente, promedio y recomendación.';}else if(u.rol==='padre'){cursosTitle.textContent='📚 Cursos del alumno';cursosSub.textContent='Cursos visibles del hijo asociado a tu cuenta.';}else if(u.rol==='docente'){cursosTitle.textContent='📚 Mis cursos asignados';cursosSub.textContent='Cursos que dictas y estudiantes relacionados.';}else{cursosTitle.textContent='📚 Gestión de Cursos';cursosSub.textContent='Asignaturas y docentes asignados';}}
+  const notasTitle=document.querySelector('#page-notas .page-title');if(notasTitle){notasTitle.textContent=u.rol==='estudiante'?'📝 Mis notas':u.rol==='padre'?'📝 Notas del alumno':'📝 Registro de Notas';}
+  const obsTitle=document.querySelector('#page-observaciones .page-title');if(obsTitle){obsTitle.textContent=u.rol==='estudiante'?'🗒️ Observaciones de mis docentes':u.rol==='padre'?'🗒️ Observaciones del alumno':'🗒️ Observaciones a Alumnos';}
+  document.querySelectorAll('.obs-manage-only').forEach(el=>el.style.display=canManageObservations()?'inline-block':'none');
+  const analisisTitle=document.querySelector('#page-analisis .page-title');if(analisisTitle){analisisTitle.textContent=u.rol==='estudiante'?'📈 Mi análisis académico':u.rol==='padre'?'📈 Análisis del alumno':'📈 Análisis de Desempeño';}
+  const orientTitle=document.querySelector('#page-orientacion .page-title');if(orientTitle){orientTitle.textContent=u.rol==='estudiante'?'🎯 Mi orientación vocacional':u.rol==='padre'?'🎯 Orientación vocacional del alumno':'🎯 Orientación Vocacional';}
+  document.querySelectorAll('.admin-only').forEach(el=>el.style.display=isAdmin()?'inline-block':'none');
+  document.querySelectorAll('.grade-manage-only').forEach(el=>el.style.display=canManageGrades()?'inline-block':'none');
+  document.querySelectorAll('.bulk-upload-only').forEach(el=>el.style.display=isAdmin()?'flex':'none');
+  updateStudentPickerVisibility();
+}
+function goApp(user){document.getElementById('login-page').classList.add('hidden');document.getElementById('app-page').classList.remove('hidden');document.getElementById('headerTitle').style.display='block';document.getElementById('headerUser').style.display='flex';document.getElementById('userName').textContent=user.nombre.split(' ')[0];document.getElementById('userRole').textContent=user.rol.toUpperCase();document.getElementById('userAvatar').textContent=user.nombre[0].toUpperCase();updateUIByRole();assertMenuConsistency();populateSelectors();renderDashboard();goPage('dashboard');}
+function createInstitution(){if(!requireAdmin())return;const nombre=document.getElementById('newInstName').value.trim(),tipo=document.getElementById('newInstType').value,ubicacion=document.getElementById('newInstLocation').value.trim();if(!nombre||!ubicacion){toast('Completa todos los campos','warn');return;}if(getInst().some(i=>i.nombre.toLowerCase()===nombre.toLowerCase())){toast('Ya existe una institución con ese nombre','err');return;}const insts=getInst();insts.push({id_institucion:newId('I'),nombre:esc(nombre),tipo:esc(tipo),ubicacion:esc(ubicacion)});s(DB.institutions,insts);renderInstitutions();renderDashboard();populateSelectors();closeModal('newInstitution');toast('Institución creada correctamente','ok');document.getElementById('newInstName').value='';document.getElementById('newInstLocation').value='';}
+function renderInstitutions(){const insts=getInst().sort((a,b)=>a.nombre.localeCompare(b.nombre));const actionHead=isAdmin()?'<th>Acciones</th>':'';const rows=insts.map(i=>`<tr><td><b>${esc(i.id_institucion)}</b></td><td>${esc(i.nombre)}</td><td>${esc(i.tipo||'Colegio')}</td><td>${esc(i.ubicacion)}</td>${isAdmin()?`<td><button class="btn-secondary btn-sm" onclick="deleteInst('${esc(i.id_institucion)}')">Eliminar</button></td>`:''}</tr>`).join('');document.getElementById('instBody').parentElement.querySelector('thead tr').innerHTML='<th>Código</th><th>Nombre</th><th>Tipo</th><th>Ubicación</th>'+actionHead;document.getElementById('instBody').innerHTML=rows||'<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--gray)">No hay instituciones registradas.</td></tr>';}
+function deleteInst(id){if(!requireAdmin())return;const n=getUsers().filter(u=>u.id_institucion===id).length;if(!confirm('¿Eliminar esta institución?\nTiene '+n+' usuario(s) asociado(s). Quedarán sin institución asignada.'))return;s(DB.institutions,getInst().filter(i=>i.id_institucion!==id));s(DB.users,getUsers().map(u=>u.id_institucion===id?{...u,id_institucion:''}:u));renderInstitutions();renderUsers();renderDashboard();populateSelectors();toast('Institución eliminada','ok');}
+function createUser(){if(!requireAdmin())return;const nombre=document.getElementById('newUserName').value.trim(),email=normEmail(document.getElementById('newUserEmail').value),rol=document.getElementById('newUserRole').value,id_inst=document.getElementById('newUserInst').value||'I001';if(!nombre||!email||!rol){toast('Completa nombre, correo y rol','warn');return;}if(!isValidEmail(email)){toast('Ingresa un correo válido','warn');return;}if(findUserByEmail(email)){toast('Ya existe un usuario con ese correo','err');return;}const users=getUsers();const id=newId('U');users.push({id_usuario:id,id_institucion:id_inst,nombre:esc(nombre),email,rol,password:'Temp123',activo:true,hijos:[]});s(DB.users,users);if(rol==='estudiante'){ensureStudentEnrollments(id,'sameInstitution');toast('Alumno creado y matriculado automáticamente en cursos del prototipo (contraseña: Temp123)','ok');}else{toast('Usuario creado (contraseña temporal: Temp123)','ok');}renderUsers();renderDashboard();populateSelectors();closeModal('newUser');document.getElementById('newUserName').value='';document.getElementById('newUserEmail').value='';}
+function renderUsers(){
+  const user=getLoggedUser();if(!user)return;
+  const q=(document.getElementById('searchUsers')?.value||'').toLowerCase(),insts=getInst();
+  let users=getUsers();
+  if(user.rol==='docente'){
+    const ids=visibleStudentsFor(user).map(x=>x.id_usuario);
+    users=users.filter(u=>u.id_usuario===user.id_usuario||ids.includes(u.id_usuario));
+  }else if(user.rol!=='admin')users=users.filter(u=>u.id_usuario===user.id_usuario);
+  users=users.filter(u=>(u.nombre||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q)).sort((a,b)=>(a.nombre||'').localeCompare(b.nombre||''));
+  const html=users.map(u=>{const instName=u.id_institucion?lookupName(insts,'id_institucion',u.id_institucion,'nombre'):'Sin institución';const canObs=canManageObservations()&&u.rol==='estudiante'&&(isAdmin()||visibleStudentsFor(user).some(s=>s.id_usuario===u.id_usuario));const obsBtn=canObs?`<button class="btn-secondary btn-sm" onclick="quickAddObservacion('${esc(u.id_usuario)}')">🗒️ Observación</button>`:'';const actions=isAdmin()?`<div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap">${obsBtn}<button class="btn-secondary btn-sm" onclick="editUser('${esc(u.id_usuario)}')">Editar</button><button class="btn-secondary btn-sm" style="color:#DC2626" onclick="deleteUser('${esc(u.id_usuario)}')">Eliminar</button></div>`:(obsBtn?`<div style="display:flex;gap:8px;flex-shrink:0">${obsBtn}</div>`:'');return`<div class="user-card"><div class="user-info-col"><div class="user-name">${esc(u.nombre)} <span class="user-role-inline">${esc((u.rol||'').toUpperCase())}</span> ${u.activo===false?'<span class="pill alto">INACTIVO</span>':''}</div><div class="user-email">${esc(u.email)}</div><div class="user-meta"><span class="user-badge-inst">🏫 ${esc(instName)}</span></div></div>${actions}</div>`;}).join('');
+  const empty='<p style="text-align:center;color:var(--gray);padding:40px">No hay usuarios visibles para tu rol.</p>';
+  if(document.getElementById('userList'))document.getElementById('userList').innerHTML=html||empty;
+  if(document.getElementById('configUserList'))document.getElementById('configUserList').innerHTML=html||empty;
+}
+function deleteUser(id){if(!requireAdmin())return;if(getLoggedUser()?.id_usuario===id){toast('No puedes eliminar tu propio usuario activo','err');return;}const notas=getNotas().filter(n=>n.id_usuario===id).length;if(!confirm('¿Eliminar este usuario?\nTiene '+notas+' nota(s) asociada(s) que también se eliminarán.'))return;s(DB.users,getUsers().filter(u=>u.id_usuario!==id).map(u=>({...u,hijos:(u.hijos||[]).filter(h=>h!==id)})));s(DB.notas,getNotas().filter(n=>n.id_usuario!==id));s(DB.analysis,getAnalysis().filter(a=>a.id_usuario!==id));s(DB.observaciones,getObservaciones().filter(o=>o.id_usuario!==id&&o.id_docente!==id));renderUsers();renderNotas();renderObservaciones();renderAnalysis();renderDashboard();populateSelectors();toast('Usuario y datos asociados eliminados','ok');}
+function editUser(id){if(!requireAdmin())return;toast('Edición avanzada pendiente. Por seguridad, solo Admin puede acceder.','warn');}
+function createCurso(){if(!requireAdmin())return;const nombre=document.getElementById('newCursoName').value.trim(),id_docente=document.getElementById('newCursoDocente').value,periodo=document.getElementById('newCursoPeriodo').value.trim()||'2026-I';if(!nombre){toast('Ingresa el nombre del curso','warn');return;}if(getCursos().some(c=>c.nombre.toLowerCase()===nombre.toLowerCase()&&c.periodo===periodo)){toast('Ya existe un curso con ese nombre en el mismo periodo','err');return;}const cursos=getCursos();cursos.push({id_curso:newId('C'),id_docente:id_docente||'',nombre:esc(nombre),periodo:esc(periodo)});s(DB.cursos,cursos);getUsers().filter(u=>u.rol==='estudiante').forEach(st=>ensureEnrollment(st.id_usuario,cursos[cursos.length-1].id_curso));renderCursos();renderDashboard();populateSelectors();closeModal('newCurso');toast('Curso creado y disponible para estudiantes del prototipo','ok');document.getElementById('newCursoName').value='';}
+function courseAverageFor(courseId, studentIds=null){
+  let notas=getNotas().filter(n=>n.id_curso===courseId);
+  if(Array.isArray(studentIds))notas=notas.filter(n=>studentIds.includes(n.id_usuario));
+  const vals=notas.map(n=>Number(n.valor)||0);
+  const avg=vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0;
+  return {avg:parseFloat(avg.toFixed(2)),count:vals.length,notas};
+}
+function courseRecommendation(avg,count){
+  if(!count)return 'Aún no hay notas registradas. Cuando se agreguen calificaciones, aparecerá una recomendación.';
+  if(avg>=16)return 'Excelente desempeño. Mantén tus hábitos y ayuda a reforzar lo aprendido con práctica constante.';
+  if(avg>=13)return 'Buen avance. Repasa los temas donde bajaste y busca subir al menos un punto esta semana.';
+  if(avg>=11)return 'Estás en zona de mejora. Dedica 20 minutos diarios a ejercicios y consulta dudas con tu docente.';
+  return 'Requiere atención prioritaria. Empieza por una meta pequeña diaria y pide apoyo al docente o familia.';
+}
+function renderCourseCards(cursos){
+  const user=getLoggedUser();const users=getUsers();const container=document.getElementById('courseCards');if(!container)return;
+  const students=visibleStudentsFor(user);const studentIds=students.map(s=>s.id_usuario);
+  const label=document.getElementById('courseRoleNote');
+  if(label){
+    label.textContent=isAdmin()?'Vista general de cursos. El administrador puede gestionar cursos; los demás roles consultan información académica.':isDocente()?'Estos son los cursos que dictas y el rendimiento promedio de tus alumnos visibles.':isPadre()?'Estos son los cursos que lleva tu hijo o hijos, con promedio y recomendación.':'Estos son los cursos que llevas, con promedio, docente y recomendación.';
+  }
+  const html=cursos.map(c=>{
+    const docente=c.id_docente?lookupName(users,'id_usuario',c.id_docente,'nombre'):'Sin asignar';
+    const metric=isAdmin()?courseAverageFor(c.id_curso):courseAverageFor(c.id_curso,studentIds);
+    const estado=metric.count?metric.avg>=16?'Potencial alto':metric.avg>=13?'Buen avance':metric.avg>=11?'En mejora':'Atención prioritaria':'Sin notas';
+    const notesList=metric.notas.slice(0,5).map(n=>`${esc(lookupName(users,'id_usuario',n.id_usuario,'nombre'))}: ${esc(n.valor)}/20 (${esc(n.evaluacion)})`).join('<br>');
+    return `<div class="course-card"><h4>📚 ${esc(c.nombre)}</h4><div class="course-meta"><b>Docente:</b> ${esc(docente)}<br><b>Periodo:</b> ${esc(c.periodo)}<br><b>Estado:</b> ${esc(estado)}</div><div class="course-score">${metric.count?esc(metric.avg):'—'}<span style="font-size:14px;color:var(--gray)">/20</span></div><div class="course-meta">Promedio calculado con <b>${esc(metric.count)}</b> nota(s) visible(s).</div><div class="course-tip">${esc(courseRecommendation(metric.avg,metric.count))}</div><div class="course-notes">${notesList||'Sin detalle de notas visible.'}</div></div>`;
+  }).join('');
+  container.innerHTML=html||'<div class="empty-state">No hay cursos visibles para tu rol. Cuando existan notas o asignaciones, aparecerán aquí.</div>';
+}
+function renderCursos(){
+  const user=getLoggedUser();let cursos=getCursos();
+  if(user?.rol!=='admin'){
+    const ids=visibleCourseIdsFor(user);
+    cursos=cursos.filter(c=>ids.includes(c.id_curso));
+  }
+  cursos=cursos.sort((a,b)=>a.nombre.localeCompare(b.nombre));const users=getUsers();
+  const actionHead=isAdmin()?'<th>Acciones</th>':'';
+  const html=cursos.map(c=>{const docente=c.id_docente?lookupName(users,'id_usuario',c.id_docente,'nombre'):'Sin asignar';return`<tr><td><b>${esc(c.id_curso)}</b></td><td>${esc(c.nombre)}</td><td>${esc(docente)}</td><td>${esc(c.periodo)}</td>${isAdmin()?`<td><button class="btn-secondary btn-sm" onclick="deleteCurso('${esc(c.id_curso)}')">Eliminar</button></td>`:''}</tr>`;}).join('');
+  document.getElementById('cursosBody').parentElement.querySelector('thead tr').innerHTML='<th>Código</th><th>Nombre</th><th>Docente asignado</th><th>Periodo</th>'+actionHead;
+  document.getElementById('cursosBody').innerHTML=html||`<tr><td colspan="${isAdmin()?5:4}"><div class="empty-state">No hay cursos visibles para tu rol. Si eres estudiante o padre, aparecerán cursos con notas registradas.</div></td></tr>`;
+  renderCourseCards(cursos);
+}
+function deleteCurso(id){if(!requireAdmin())return;const notas=getNotas().filter(n=>n.id_curso===id).length;if(!confirm('¿Eliminar este curso?\nTiene '+notas+' nota(s) asociada(s) que también se eliminarán.'))return;s(DB.cursos,getCursos().filter(c=>c.id_curso!==id));s(DB.notas,getNotas().filter(n=>n.id_curso!==id));renderCursos();renderNotas();renderDashboard();populateSelectors();toast('Curso y notas eliminados','ok');}
+function createNota(){
+  if(!canManageGrades()){toast('No tienes permiso para registrar notas','err');return;}
+  const user=getLoggedUser(),id_usuario=document.getElementById('notaStudent').value,id_curso=document.getElementById('notaCurso').value,valor=parseFloat(document.getElementById('notaValue').value),evaluacion=document.getElementById('notaEval').value;
+  const editId=document.getElementById('notaEditId')?.value||'';
+  if(!id_usuario||!id_curso||isNaN(valor)){toast('Completa todos los campos','warn');return;}
+  if(user.rol==='docente'){
+    if(!visibleCourseIdsFor(user).includes(id_curso)){toast('Solo puedes registrar notas en tus cursos','err');return;}
+    if(!visibleStudentsFor(user).some(st=>st.id_usuario===id_usuario)){toast('Solo puedes registrar notas a alumnos relacionados con tus cursos','err');return;}
+  }
+  if(valor<0||valor>20){toast('La nota debe estar entre 0 y 20','warn');return;}
+  ensureEnrollment(id_usuario,id_curso);
+  const notas=getNotas();
+  if(editId){
+    const idx=notas.findIndex(n=>n.id_nota===editId);
+    if(idx===-1){toast('La nota ya no existe, puede haber sido eliminada','err');cancelNotaModal();renderNotas();return;}
+    if(!canEditNota(notas[idx],user)){toast('No tienes permiso para editar esta nota','err');return;}
+    notas[idx]={...notas[idx],id_usuario,id_curso,valor,evaluacion:esc(evaluacion)};
+    s(DB.notas,notas);renderNotas();renderDashboard();cancelNotaModal();toast('Nota actualizada correctamente','ok');
+  }else{
+    notas.push({id_nota:newId('N'),id_usuario,id_curso,valor,evaluacion:esc(evaluacion),fecha:new Date().toISOString().split('T')[0]});
+    s(DB.notas,notas);renderNotas();renderDashboard();closeModal('newNota');toast('Nota registrada correctamente','ok');
+  }
+  document.getElementById('notaValue').value='';
+}
+function editNota(id){
+  const user=getLoggedUser();const n=getNotas().find(x=>x.id_nota===id);
+  if(!n||!canEditNota(n,user)){toast('No tienes permiso para editar esta nota','err');return;}
+  showModal('newNota');
+  document.getElementById('notaEditId').value=id;
+  document.getElementById('notaStudent').value=n.id_usuario;
+  document.getElementById('notaCurso').value=n.id_curso;
+  document.getElementById('notaValue').value=n.valor;
+  document.getElementById('notaEval').value=n.evaluacion;
+  document.querySelector('#modal-newnota .modal-title').textContent='✏️ Editar nota';
+  document.getElementById('notaSubmitBtn').textContent='Guardar cambios';
+}
+function renderNotas(){const user=getLoggedUser();let notas=visibleNotasFor(),users=getUsers(),cursos=getCursos();const q=(document.getElementById('searchNotas')?.value||'').toLowerCase();if(q){notas=notas.filter(n=>{const est=lookupName(users,'id_usuario',n.id_usuario,'nombre'),cur=lookupName(cursos,'id_curso',n.id_curso,'nombre');return [est,cur,n.evaluacion,n.valor,n.fecha].join(' ').toLowerCase().includes(q);});}const html=notas.map(n=>{const est=lookupName(users,'id_usuario',n.id_usuario,'nombre'),cur=lookupName(cursos,'id_curso',n.id_curso,'nombre');const canManage=canEditNota(n,user);return`<tr><td style="font-size:11px">${esc(n.id_nota)}</td><td>${esc(est)}</td><td>${esc(cur)}</td><td><b>${esc(n.valor)}</b>/20</td><td>${esc(n.evaluacion)}</td><td>${esc(fmtDate(n.fecha))}</td><td>${canManage?`<div style="display:flex;gap:6px"><button class="btn-secondary btn-sm" onclick="editNota('${esc(n.id_nota)}')">✏️</button><button class="btn-secondary btn-sm" style="color:#DC2626" onclick="deleteNota('${esc(n.id_nota)}')">×</button></div>`:'—'}</td></tr>`;}).join('');document.getElementById('notasBody').innerHTML=html||'<tr><td colspan="7"><div class="empty-state">No hay notas visibles para tu rol o filtro actual.</div></td></tr>';}
+function deleteNota(id){const user=getLoggedUser();const notas=getNotas();const n=notas.find(x=>x.id_nota===id);if(!n||!canEditNota(n,user)){toast('No tienes permiso para eliminar esta nota','err');return;}if(!confirm('¿Eliminar esta nota?'))return;s(DB.notas,notas.filter(x=>x.id_nota!==id));renderNotas();renderDashboard();toast('Nota eliminada','ok');}
+function quickAddObservacion(studentId){if(!canManageObservations()){toast('No tienes permiso para registrar observaciones','err');return;}if(!isAdmin()&&!visibleStudentsFor().some(s=>s.id_usuario===studentId)){toast('Solo puedes registrar observaciones a alumnos relacionados con tus cursos','err');return;}showModal('newObservacion',studentId);}
+function createObservacion(){
+  if(!canManageObservations()){toast('No tienes permiso para registrar observaciones','err');return;}
+  const user=getLoggedUser();
+  const id_usuario=document.getElementById('obsStudent').value,tipo=document.getElementById('obsTipo').value,texto=document.getElementById('obsTexto').value.trim();
+  const editId=document.getElementById('obsEditId')?.value||'';
+  if(!id_usuario||!texto){toast('Selecciona un estudiante y escribe la observación','warn');return;}
+  if(user.rol==='docente'&&!visibleStudentsFor(user).some(st=>st.id_usuario===id_usuario)){toast('Solo puedes registrar observaciones a alumnos relacionados con tus cursos','err');return;}
+  const obs=getObservaciones();
+  if(editId){
+    const idx=obs.findIndex(o=>o.id_observacion===editId);
+    if(idx===-1){toast('La observación ya no existe','err');cancelObsModal();renderObservaciones();return;}
+    if(!canEditObservacion(obs[idx],user)){toast('No tienes permiso para editar esta observación','err');return;}
+    obs[idx]={...obs[idx],id_usuario,tipo,texto:esc(texto)};
+    s(DB.observaciones,obs);renderObservaciones();renderDashboard();cancelObsModal();toast('Observación actualizada correctamente','ok');
+  }else{
+    obs.push({id_observacion:newId('OB'),id_usuario,id_docente:user.id_usuario,tipo,texto:esc(texto),fecha:new Date().toISOString().split('T')[0]});
+    s(DB.observaciones,obs);renderObservaciones();renderDashboard();closeModal('newObservacion');toast('Observación registrada correctamente','ok');
+  }
+  document.getElementById('obsTexto').value='';
+}
+function editObservacion(id){
+  const user=getLoggedUser();const o=getObservaciones().find(x=>x.id_observacion===id);
+  if(!o||!canEditObservacion(o,user)){toast('No tienes permiso para editar esta observación','err');return;}
+  showModal('newObservacion');
+  document.getElementById('obsEditId').value=id;
+  document.getElementById('obsStudent').value=o.id_usuario;
+  document.getElementById('obsTipo').value=o.tipo;
+  document.getElementById('obsTexto').value=o.texto;
+  document.querySelector('#modal-newobs .modal-title').textContent='✏️ Editar observación';
+  document.getElementById('obsSubmitBtn').textContent='Guardar cambios';
+}
+function deleteObservacion(id){const user=getLoggedUser();const obs=getObservaciones();const target=obs.find(o=>o.id_observacion===id);if(!target||!canEditObservacion(target,user)){toast('No tienes permiso para eliminar esta observación','err');return;}if(!confirm('¿Eliminar esta observación?'))return;s(DB.observaciones,obs.filter(o=>o.id_observacion!==id));renderObservaciones();renderDashboard();toast('Observación eliminada','ok');}
+function renderObservaciones(){
+  const user=getLoggedUser();
+  setRoleNote('obsRoleNote','<b>Modo Admin:</b> puedes ver y eliminar todas las observaciones registradas por los docentes.',isDocente()?'<b>Modo docente:</b> registra observaciones de seguimiento solo para los alumnos relacionados con tus cursos. Puedes editar/eliminar únicamente las que tú registraste.':isEstudiante()?'<b>Modo estudiante:</b> consulta las observaciones que tus docentes registraron sobre tu desempeño.':'<b>Modo padre:</b> consulta las observaciones registradas por los docentes del alumno vinculado.');
+  let obs=visibleObservacionesFor(user),users=getUsers();
+  const q=(document.getElementById('searchObs')?.value||'').toLowerCase();
+  if(q){obs=obs.filter(o=>{const est=lookupName(users,'id_usuario',o.id_usuario,'nombre');return [est,o.tipo,o.texto].join(' ').toLowerCase().includes(q);});}
+  obs=[...obs].sort((a,b)=>String(b.fecha).localeCompare(String(a.fecha)));
+  const html=obs.map(o=>{
+    const est=lookupName(users,'id_usuario',o.id_usuario,'nombre');
+    const doc=lookupName(users,'id_usuario',o.id_docente,'nombre');
+    const canManage=canEditObservacion(o,user);
+    return `<tr><td style="font-size:11px">${esc(o.id_observacion)}</td><td>${esc(est)}</td><td><span class="pill ${o.tipo==='Positiva'?'bajo':o.tipo==='Conducta'?'alto':'medio'}">${esc(o.tipo)}</span></td><td>${esc(o.texto)}</td><td>${esc(doc)}</td><td>${esc(fmtDate(o.fecha))}</td><td>${canManage?`<div style="display:flex;gap:6px"><button class="btn-secondary btn-sm" onclick="editObservacion('${esc(o.id_observacion)}')">✏️</button><button class="btn-secondary btn-sm" style="color:#DC2626" onclick="deleteObservacion('${esc(o.id_observacion)}')">×</button></div>`:'—'}</td></tr>`;
+  }).join('');
+  document.getElementById('obsBody').innerHTML=html||'<tr><td colspan="7"><div class="empty-state">No hay observaciones visibles para tu rol o filtro actual.</div></td></tr>';
+}
+function generateAnalysis(){if(!requireAdmin())return;const students=getUsers().filter(u=>u.rol==='estudiante');if(!students.length){toast('No hay estudiantes registrados','warn');return;}const notas=getNotas();const analysis=students.map(u=>{const uN=notas.filter(n=>n.id_usuario===u.id_usuario).sort((a,b)=>String(a.fecha).localeCompare(String(b.fecha))).map(n=>Number(n.valor));const prom=uN.length?uN.reduce((a,b)=>a+b,0)/uN.length:0;let tendencia='Estable';if(uN.length>=2){const diff=uN[uN.length-1]-uN[0];tendencia=diff>1?'Ascendente':diff<-1?'Descendente':'Estable';}else tendencia=prom>15?'Ascendente':prom<10?'Descendente':'Estable';const desaprobadas=uN.filter(v=>v<11).length;const riesgo=prom<11||desaprobadas>=3?'Alto':prom<13||desaprobadas>=1?'Medio':'Bajo';return{id_analisis:newId('A'),id_usuario:u.id_usuario,promedio:parseFloat(prom.toFixed(2)),tendencia,riesgo_desercion:riesgo,fecha:new Date().toISOString().split('T')[0]};});s(DB.analysis,analysis);renderAnalysis();renderDashboard();toast(analysis.length+' análisis generados correctamente','ok');}
+function renderAnalysis(){const u=getLoggedUser();let note='';if(isAdmin())note='<b>Modo Admin:</b> puedes generar análisis oficiales y visualizar toda la información.';else if(isDocente())note='<b>Modo docente:</b> puedes consultar el análisis académico de los estudiantes asignados a tus cursos. Solo el Administrador guarda análisis oficiales.';else if(isEstudiante())note='<b>Modo estudiante:</b> puedes consultar tu propio análisis académico, plan semanal y PDF.';else note='<b>Modo padre:</b> puedes consultar el análisis académico del estudiante vinculado y descargarlo en PDF.';const n=document.getElementById('analisisRoleNote');if(n)n.innerHTML=note;const analysis=visibleAnalysisFor(),users=getUsers();const html=analysis.map(a=>{const est=lookupName(users,'id_usuario',a.id_usuario,'nombre');const full=buildAnalysisForStudent({id_usuario:a.id_usuario});const merged={...full,...a,cantidad_notas:a.cantidad_notas||full.cantidad_notas,cursos_evaluados:a.cursos_evaluados||full.cursos_evaluados,detalle_cursos:a.detalle_cursos||full.detalle_cursos,desaprobadas:a.desaprobadas??full.desaprobadas};const tCls=merged.tendencia==='Ascendente'?'ascendente':merged.tendencia==='Descendente'?'descendente':'estable';const mot=motivationForAnalysis(merged,est);return`<tr><td style="font-size:11px">${esc(merged.id_analisis)}</td><td><b>${esc(est)}</b></td><td><b>${esc(merged.promedio)}</b>/20</td><td><div class="metric-detail"><b>${esc(merged.cantidad_notas)}</b> nota(s) usadas<br>${esc(merged.desaprobadas)} desaprobada(s)</div></td><td><div class="metric-detail"><b>${esc(merged.cursos_evaluados)}</b> curso(s)<br>${esc(merged.detalle_cursos)}</div></td><td><span class="pill ${tCls}">${esc(merged.tendencia)}</span></td><td><span class="pill ${String(merged.riesgo_desercion).toLowerCase()}">${esc(merged.riesgo_desercion)}</span></td><td><div class="metric-detail"><b>${esc(mot.nivel)}</b><br>${esc(mot.frase)}</div></td></tr>`;}).join('');document.getElementById('analisisBody').innerHTML=html||'<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--gray)">No hay notas suficientes para mostrar análisis visible.</td></tr>';}
+function generateReports(){if(!requireAdmin())return;const analysis=getAnalysis();if(!analysis.length){toast('Genera un análisis primero','warn');return;}const reportes=[];const hoy=new Date().toISOString().split('T')[0];analysis.forEach(a=>{reportes.push({id_reporte:newId('R'),id_analisis:a.id_analisis,id_usuario:a.id_usuario,tipo:'Desempeño académico',formato:'Digital',fecha_gen:hoy});});s(DB.reportes,reportes);renderReportes();renderDashboard();toast(analysis.length+' reportes generados','ok');}
+function renderReportes(){setRoleNote('reportesRoleNote','<b>Modo Admin:</b> puedes generar reportes oficiales, exportar Excel y descargar PDF.','<b>Modo consulta:</b> puedes ver tu reporte y descargarlo en PDF; solo el Administrador genera reportes oficiales o exporta Excel.');const reportes=visibleReportsFor();const users=getUsers();const html=reportes.map(r=>{const est=r.id_usuario?lookupName(users,'id_usuario',r.id_usuario,'nombre'):'—';return`<tr><td style="font-size:11px">${esc(r.id_reporte)}</td><td style="font-size:11px">${esc(r.id_analisis)}</td><td>${esc(est)}</td><td>${esc(r.tipo)}</td><td>${esc(r.formato)}</td><td>${esc(fmtDate(r.fecha_gen))}</td></tr>`;}).join('');document.getElementById('reportesBody').innerHTML=html||'<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--gray)">No hay información visible para generar una vista de reporte.</td></tr>';}
+function exportReport(){if(!requireAdmin())return;const analysis=getAnalysis(),users=getUsers();if(!analysis.length){toast('Genera un análisis primero','warn');return;}if(typeof XLSX==='undefined'){toast('No se pudo cargar la librería de Excel. Verifica conexión a internet.','err');return;}const data=analysis.map(a=>({Estudiante:lookupName(users,'id_usuario',a.id_usuario,'nombre'),Promedio:a.promedio,Tendencia:a.tendencia,Riesgo:a.riesgo_desercion,Fecha:a.fecha||''}));const ws=XLSX.utils.json_to_sheet(data);const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Análisis');XLSX.writeFile(wb,'Reporte_SADA_'+fmtDate(new Date().toISOString().split('T')[0]).replace(/\//g,'-')+'.xlsx');toast('Reporte Excel descargado','ok');}
+function generateVocationalGuide(){
+  const studentId=document.getElementById('stuSelect').value;
+  if(!studentId){
+    document.getElementById('vocationalGuide').innerHTML='<p style="color:var(--gray);padding:40px;text-align:center">Selecciona un estudiante para ver su perfil vocacional</p>';
+    document.getElementById('recsTable').innerHTML='';
+    return;
+  }
+  if(!visibleStudentsFor().some(s=>s.id_usuario===studentId)){toast('No tienes permiso para ver este estudiante','err');return;}
+  const data=calculateOrientationForStudent(studentId);
+  if(!data){toast('No se pudo calcular la orientación','err');return;}
+  const {student,analysis,areas,mot}=data;
+  const top=areas[0]||{area:'Sin datos',puntaje:0,base:'Aún faltan notas registradas'};
+  document.getElementById('vocationalGuide').innerHTML=`<div class="logic-box"><h4>🧠 ¿Cómo se calcula esta orientación?</h4><p class="mini-text">La orientación vocacional es referencial. Se calcula cruzando las notas del estudiante por curso: Matemática, Comunicación, CTA, Computación, Ciencias Sociales, Inglés, Educación Física y Arte. Cada área usa ponderaciones distintas. Por ejemplo, Tecnología prioriza Computación y Matemática; Humanidades prioriza Comunicación y Ciencias Sociales; Salud prioriza CTA.</p></div><div style="background:var(--light);border-radius:12px;padding:24px"><h3 style="color:var(--navy);margin-bottom:16px">📋 Perfil vocacional de ${esc(student.nombre)}</h3><p style="color:var(--dark);line-height:1.8"><b>Promedio académico:</b> ${esc(analysis.promedio)}/20<br><b>Base del promedio:</b> ${esc(analysis.cantidad_notas)} nota(s) analizadas en ${esc(analysis.cursos_evaluados)} curso(s): ${esc(analysis.detalle_cursos)}<br><b>Tendencia:</b> ${esc(analysis.tendencia)}<br><b>Riesgo de deserción:</b> <span class="pill ${String(analysis.riesgo_desercion).toLowerCase()}">${esc(analysis.riesgo_desercion)}</span><br><b>Área con mayor afinidad:</b> ${esc(top.icon||'🎯')} ${esc(top.area)} — ${esc(top.puntaje)}%</p></div><div class="motivation-box"><div class="quote">${esc(mot.frase)}</div><div class="mini-text">${esc(mot.ref)}</div></div>`;
+  const aId=analysis.id_analisis||('AUTO_'+studentId);
+  let recs=getRecs().filter(r=>r.id_analisis!==aId);
+  areas.forEach(a=>{recs.push({id_recomendacion:newId('RV'),id_analisis:aId,area_afinidad:a.icon+' '+a.area,puntaje:a.puntaje,fecha:new Date().toISOString().split('T')[0]});});
+  s(DB.recomendaciones,recs);
+  document.getElementById('recsTable').innerHTML=`<h3 style="font-size:16px;color:var(--navy);margin:20px 0 12px">Áreas sugeridas y lógica utilizada</h3><div class="table-container"><table class="data-table"><thead><tr><th>#</th><th>Área de afinidad</th><th>Puntaje</th><th>Datos usados</th><th>Fecha</th></tr></thead><tbody>${areas.map((a,i)=>`<tr><td>${i+1}</td><td>${esc(a.icon+' '+a.area)}</td><td><b>${esc(a.puntaje)}%</b></td><td>${esc(a.base)}</td><td>${esc(fmtDate(new Date().toISOString().split('T')[0]))}</td></tr>`).join('')}</tbody></table></div>`;
+}
+
+function roleDisplayName(role){return ({admin:'Administrador',docente:'Docente',estudiante:'Estudiante',padre:'Padre de familia'}[role]||'Usuario');}
+function renderVocationalMainPanel(){const el=document.getElementById('vocationalMainPanel');if(el){el.innerHTML='';el.style.display='none';}}
+function renderDashboardUx(){
+  const user=getLoggedUser();const el=document.getElementById('dashboardUxPanel');if(!el||!user)return;
+  const role=roleDisplayName(user.rol);
+  const students=visibleStudentsFor(user);
+  const notas=visibleNotasFor(user);
+  const courseCount=visibleCourseIdsFor(user).length;
+  const analysisCount=visibleAnalysisFor(user).length || students.filter(st=>getStudentNotes(st.id_usuario).length>0).length;
+  const orientationReady=students.filter(st=>getStudentNotes(st.id_usuario).length>0).length;
+  function card(icon,title,value,detail,page){return `<div class="dash-card" onclick="goPage('${page}')"><div class="dash-icon">${icon}</div><div><b>${esc(title)}</b><strong>${esc(value)}</strong><small>${esc(detail)}</small></div></div>`;}
+  let cards=[];
+  let subtitle='';
+  if(isAdmin()){
+    subtitle='Panel administrativo: gestiona la información base para que alumnos, padres y docentes consulten datos correctos.';
+    cards=[
+      card('👥','Usuarios',getUsers().length,'Crear, revisar y administrar roles','usuarios'),
+      card('📥','Carga Excel','Admin','Subir alumnos, notas y credenciales temporales','usuarios'),
+      card('📚','Cursos',getCursos().length,'Asignaturas y docentes registrados','cursos'),
+      card('📝','Notas',getNotas().length,'Calificaciones registradas en el sistema','notas')
+    ];
+  }else if(isDocente()){
+    subtitle='Panel docente: solo ves alumnos, cursos y notas relacionados con tus cursos asignados.';
+    cards=[
+      card('👥','Alumnos',students.length,'Estudiantes vinculados a tus cursos','usuarios'),
+      card('📚','Mis cursos',courseCount,'Cursos que dictas','cursos'),
+      card('📝','Notas',notas.length,'Notas visibles de tus cursos','notas'),
+      card('📈','Análisis',analysisCount,'Diagnóstico de tus estudiantes','analisis')
+    ];
+  }else if(isEstudiante()){
+    subtitle='Panel del estudiante: consulta solo tu información académica y tu orientación vocacional.';
+    cards=[
+      card('📚','Mis cursos',courseCount,'Cursos que llevas','cursos'),
+      card('📝','Mis notas',notas.length,'Calificaciones registradas','notas'),
+      card('📈','Mi análisis',analysisCount,'Promedio, tendencia y plan semanal','analisis'),
+      card('🎯','Mi orientación',orientationReady?'Lista':'Pendiente','Área vocacional sugerida y PDF','orientacion')
+    ];
+  }else{
+    const alumno=students[0];
+    subtitle=`Panel familiar: consulta únicamente la información académica ${alumno?'de '+alumno.nombre:'del alumno vinculado'}.`;
+    cards=[
+      card('📚','Cursos del alumno',courseCount,'Cursos del hijo asociado','cursos'),
+      card('📝','Notas',notas.length,'Notas visibles del alumno','notas'),
+      card('📈','Análisis',analysisCount,'Resumen académico y PDF','analisis'),
+      card('🎯','Orientación',orientationReady?'Lista':'Pendiente','Guía vocacional del alumno','orientacion')
+    ];
+  }
+  el.innerHTML=`<h3>👋 Bienvenido, ${esc(user.nombre)} <span class="pill bajo">${esc(role)}</span></h3><p class="muted">${esc(subtitle)}</p><div class="dash-grid-simple">${cards.join('')}</div><p class="mini-text" style="margin-top:14px"><b>Diseño simplificado:</b> se muestran solo accesos útiles para tu rol, sin módulos repetidos ni funciones administrativas innecesarias.</p>`;
+}
+function calculateOrientationForStudent(studentId){
+  const student=getUsers().find(u=>u.id_usuario===studentId&&u.rol==='estudiante');
+  if(!student)return null;
+  const analysis=buildAnalysisForStudent(student);
+  const notas=getStudentNotes(studentId),cursos=getCursos();
+  function avgCurso(nombre){const c=cursos.find(x=>x.nombre===nombre);if(!c)return 0;const ns=notas.filter(x=>x.id_curso===c.id_curso).map(x=>Number(x.valor)||0);return ns.length?ns.reduce((a,b)=>a+b,0)/ns.length:0;}
+  const M=avgCurso('Matemática'),Co=avgCurso('Comunicación'),CT=avgCurso('CTA'),Cp=avgCurso('Computación'),CS=avgCurso('Ciencias Sociales'),Ig=avgCurso('Inglés'),EF=avgCurso('Ed. Física'),Ar=avgCurso('Arte');
+  const areas=[
+    {area:'Ciencias e Ingeniería',icon:'🔬',puntaje:+((M*0.5+CT*0.3+Cp*0.2)/20*100).toFixed(1),base:'Matemática 50%, CTA 30%, Computación 20%'},
+    {area:'Tecnología y Sistemas',icon:'💻',puntaje:+((Cp*0.5+M*0.4+Ig*0.1)/20*100).toFixed(1),base:'Computación 50%, Matemática 40%, Inglés 10%'},
+    {area:'Ciencias de la Salud',icon:'🏥',puntaje:+((CT*0.6+M*0.2+EF*0.2)/20*100).toFixed(1),base:'CTA 60%, Matemática 20%, Ed. Física 20%'},
+    {area:'Humanidades y Sociales',icon:'📖',puntaje:+((Co*0.5+CS*0.4+Ig*0.1)/20*100).toFixed(1),base:'Comunicación 50%, Ciencias Sociales 40%, Inglés 10%'},
+    {area:'Artes y Comunicación',icon:'🎨',puntaje:+((Ar*0.6+Co*0.2+EF*0.2)/20*100).toFixed(1),base:'Arte 60%, Comunicación 20%, Ed. Física 20%'}
+  ].sort((a,b)=>b.puntaje-a.puntaje);
+  const mot=motivationForAnalysis(analysis,student.nombre);
+  return {student,analysis,areas,mot};
+}
+
+function weeklyGroupsForStudent(studentId){
+  const cursos=getCursos();
+  const notas=getStudentNotes(studentId).slice().sort((a,b)=>String(a.fecha||'').localeCompare(String(b.fecha||'')));
+  if(!notas.length)return [];
+  const groups=[];
+  for(let i=0;i<notas.length;i+=2){
+    const chunk=notas.slice(i,i+2);
+    const avg=chunk.reduce((s,n)=>s+(Number(n.valor)||0),0)/chunk.length;
+    const names=[...new Set(chunk.map(n=>lookupName(cursos,'id_curso',n.id_curso,'nombre')))].join(', ');
+    groups.push({semana:'Semana '+(groups.length+1),promedio:+avg.toFixed(2),notas:chunk.length,cursos:names||'—'});
+  }
+  return groups;
+}
+function courseTrafficForStudent(studentId){
+  const notas=getStudentNotes(studentId), cursos=getCursos();
+  return cursos.map(c=>{
+    const ns=notas.filter(n=>n.id_curso===c.id_curso).map(n=>Number(n.valor)||0);
+    if(!ns.length)return null;
+    const avg=ns.reduce((a,b)=>a+b,0)/ns.length;
+    return {curso:c.nombre,promedio:+avg.toFixed(2),estado:avg>=15?'Verde':avg>=11?'Amarillo':'Rojo'};
+  }).filter(Boolean).sort((a,b)=>a.promedio-b.promedio);
+}
+function courseAveragesForStudent(studentId){
+  // Usado por los generadores de PDF (informe completo y plan semanal).
+  // Devuelve un promedio por curso con nombre de curso incluido, ordenado
+  // de menor a mayor promedio (el curso más débil queda primero).
+  const notas=getStudentNotes(studentId), cursos=getCursos();
+  const ids=[...new Set(notas.map(n=>n.id_curso))];
+  return ids.map(id=>{
+    const c=cursos.find(x=>x.id_curso===id);
+    const ns=notas.filter(n=>n.id_curso===id).map(n=>Number(n.valor)||0);
+    const avg=ns.length?ns.reduce((a,b)=>a+b,0)/ns.length:0;
+    return {id_curso:id, course:c?c.nombre:'Curso', avg:+avg.toFixed(2)};
+  }).sort((a,b)=>a.avg-b.avg);
+}
+function renderWeeklyPlan(){
+  const studentId=contextStudentId('planStudentSelect');
+  const box=document.getElementById('weeklyPlanContent');
+  if(!box)return;
+  if(!studentId){box.innerHTML='<p style="color:var(--gray);padding:40px;text-align:center">Selecciona un estudiante para ver su plan de mejora semanal.</p>';return;}
+  if(!visibleStudentsFor().some(s=>s.id_usuario===studentId)){box.innerHTML='<p style="color:var(--danger);padding:30px;text-align:center">No tienes permiso para ver este plan.</p>';return;}
+  const student=getUsers().find(u=>u.id_usuario===studentId);
+  const analysis=buildAnalysisForStudent(student);
+  const weeks=weeklyGroupsForStudent(studentId);
+  const traffic=courseTrafficForStudent(studentId);
+  const mot=motivationForAnalysis(analysis,student.nombre);
+  const max=20;
+  const bars=weeks.length?weeks.map(w=>`<div class="bar-row"><span>${esc(w.semana)}</span><div class="bar-track"><div class="bar-fill" style="width:${Math.max(3,(w.promedio/max)*100)}%"></div></div><b>${esc(w.promedio)}</b><div class="mini-text" style="grid-column:2/4">${esc(w.notas)} nota(s): ${esc(w.cursos)}</div></div>`).join(''):'<p class="mini-text">Aún no hay notas suficientes para generar barras semanales.</p>';
+  const low=traffic.filter(t=>t.estado==='Rojo'||t.estado==='Amarillo').slice(0,3);
+  const planItems=[
+    low.length?`Reforzar esta semana: ${low.map(x=>x.curso).join(', ')}.`:'Mantener el ritmo actual y practicar ejercicios de mayor dificultad.',
+    'Dedicar 25 minutos diarios a repasar el curso con menor promedio.',
+    'Pedir retroalimentación al docente y corregir errores antes de la siguiente evaluación.',
+    'Registrar una meta concreta: subir al menos 1 punto en el próximo control.'
+  ];
+  const trafficHtml=traffic.length?traffic.map(t=>`<div class="traffic-card"><span class="traffic-dot ${t.estado==='Verde'?'dot-green':t.estado==='Amarillo'?'dot-amber':'dot-red'}"></span><b>${esc(t.curso)}</b><br><span class="mini-text">Promedio: ${esc(t.promedio)}/20 · ${esc(t.estado)}</span></div>`).join(''):'<p class="mini-text">No hay cursos evaluados todavía.</p>';
+  box.innerHTML=`<div class="weekly-plan"><div class="plan-summary"><h3>📊 Desempeño semanal de ${esc(student.nombre)}</h3><p class="mini-text">Promedio actual: <b>${esc(analysis.promedio)}/20</b> · Base: <b>${esc(analysis.cantidad_notas)} nota(s)</b> · Riesgo: <b>${esc(analysis.riesgo_desercion)}</b></p><div class="bar-chart">${bars}</div><div class="motivation-box"><div class="quote">${esc(mot.frase)}</div><div>${esc(mot.ref)}</div></div></div><div class="plan-summary"><h3>✅ Acciones de mejora</h3><div class="plan-list">${planItems.map((x,i)=>`<div class="plan-item"><b>Paso ${i+1}:</b> ${esc(x)}</div>`).join('')}</div><h3 style="margin-top:18px">🚦 Semáforo por curso</h3><div class="traffic-grid">${trafficHtml}</div></div></div>`;
+}
+function renderDashboard(){const user=getLoggedUser();renderDashboardUx();const oldGrid=document.querySelector('#page-dashboard .grid.grid-4');if(oldGrid)oldGrid.style.display='none';const set=(id,val)=>{const e=document.getElementById(id);if(e)e.textContent=val;};const show=(id,on)=>{const e=document.getElementById(id);if(e)e.style.display=on?'block':'none';};show('kpiInst',isAdmin());show('kpiUsuarios',isAdmin()||isDocente());show('kpiReportes',isAdmin());set('kInst',getInst().length);set('kUsuarios',isAdmin()?getUsers().length:visibleStudentsFor(user).length);set('kCursos',visibleCourseIdsFor(user).length);set('kNotas',visibleNotasFor(user).length);set('kAnalisis',visibleAnalysisFor(user).length);set('kReportes',visibleReportsFor(user).length);const ul=document.getElementById('kUsuariosLabel');if(ul)ul.textContent=isAdmin()?'Usuarios':'Estudiantes visibles';const mods=document.getElementById('modulesByRole');if(mods){let items;if(isAdmin()){items=['✓ <b>Instituciones</b> — Datos maestros de colegios','✓ <b>Usuarios</b> — Gestión de cuentas y roles','✓ <b>Cursos</b> — Asignaturas y docentes','✓ <b>Notas</b> — Calificaciones registradas','✓ <b>Observaciones</b> — Comentarios de seguimiento de todos los docentes','✓ <b>Análisis</b> — Promedios, tendencia, riesgo y plan semanal','✓ <b>Reportes oficiales</b> — Generación administrativa y exportación','✓ <b>Orientación</b> — Afinidad vocacional','✓ <b>Integraciones/MVP</b> — Simulación LMS, privacidad, alcance y trazabilidad del documento'];}else if(isDocente()){items=['✓ <b>Alumnos</b> — Solo estudiantes relacionados a tus cursos','✓ <b>Cursos</b> — Cursos que dictas','✓ <b>Notas</b> — Registro y revisión de tus cursos','✓ <b>Observaciones</b> — Registra comentarios de seguimiento a tus alumnos','✓ <b>Análisis</b> — Diagnóstico, plan semanal y PDF de estudiantes visibles','✓ <b>Orientación</b> — Guía vocacional y PDF'];}else if(isEstudiante()){items=['✓ <b>Mis cursos</b> — Cursos que llevas','✓ <b>Mis notas</b> — Solo tus calificaciones','✓ <b>Observaciones</b> — Comentarios que tus docentes registraron','✓ <b>Mi análisis</b> — Promedio, tendencia, riesgo, plan semanal y PDF','✓ <b>Mi orientación</b> — Guía vocacional y PDF'];}else{items=['✓ <b>Cursos del alumno</b> — Cursos del hijo asociado','✓ <b>Notas</b> — Calificaciones visibles del alumno','✓ <b>Observaciones</b> — Comentarios de docentes sobre el alumno','✓ <b>Análisis</b> — Promedio, tendencia, riesgo, plan semanal y PDF','✓ <b>Orientación</b> — Guía vocacional y PDF del alumno'];}mods.innerHTML=items.join('<br>');}}
+
+/* === v10: subpestañas dentro de Análisis === */
+function switchAnalysisTab(tab){
+  ['resumen','plan'].forEach(t=>{
+    const panel=document.getElementById('analysis-tab-'+t);
+    const btn=document.querySelector('[data-analysis-tab="'+t+'"]');
+    if(panel)panel.classList.toggle('hidden',t!==tab);
+    if(btn)btn.classList.toggle('active',t===tab);
+  });
+  if(tab==='plan'){populateSelectors();renderWeeklyPlan();}
+}
+
+
+function clearImportBox(id){const el=document.getElementById(id);if(el)el.value='';}
+function normalizeHeader(h){return String(h||'').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');}
+function rowVal(row,names){for(const n of names){if(row[n]!==undefined&&row[n]!==null&&String(row[n]).trim()!=='')return row[n];}return '';}
+function findCourseByNameOrCode(value){const v=String(value||'').trim().toLowerCase();if(!v)return null;return getCursos().find(c=>String(c.id_curso).toLowerCase()===v||String(c.nombre).trim().toLowerCase()===v)||null;}
+function randomTempPassword(){return 'SADA'+Math.floor(1000+Math.random()*9000);}
+function normalizeExcelRow(raw){const out={};Object.keys(raw||{}).forEach(k=>out[normalizeHeader(k)]=raw[k]);return out;}
+function rowsFromFirstAcademicSheet(wb){
+  const preferred=['Carga_Masiva','Estudiantes','Notas','Alumnos'];
+  const name=preferred.find(n=>wb.SheetNames.includes(n))||wb.SheetNames[0];
+  const sheet=wb.Sheets[name];
+  return XLSX.utils.sheet_to_json(sheet,{defval:''}).map(normalizeExcelRow).filter(r=>Object.values(r).some(v=>String(v).trim()!==''));
+}
+function createOrUpdateStudentFromRow(row,curso,user){
+  const email=normEmail(rowVal(row,['correo_electronico','correo','email','correo_estudiante']));
+  const nombre=String(rowVal(row,['estudiante','alumno','nombre','nombre_completo'])).trim();
+  const codigo=String(rowVal(row,['codigo','codigo_alumno','cod_estudiante'])).trim();
+  const temp=String(rowVal(row,['contrasena_temporal','contraseña_temporal','password','clave_temporal'])).trim()||randomTempPassword();
+  if(!nombre||!email||!isValidEmail(email))return {ok:false,error:'Falta estudiante o correo válido'};
+  let users=getUsers();
+  let st=users.find(u=>normEmail(u.email)===email);
+  let created=false;
+  if(st&&st.rol!=='estudiante')return {ok:false,error:'El correo existe pero no pertenece a un estudiante: '+email};
+  let idInst='I001';
+  if(curso){const doc=getUsers().find(u=>u.id_usuario===curso.id_docente);if(doc?.id_institucion)idInst=doc.id_institucion;}
+  if(!st){
+    st={id_usuario:newId('U'),id_institucion:idInst,nombre:esc(nombre),email,rol:'estudiante',password:temp,activo:true,hijos:[],codigo_externo:codigo};
+    users.push(st);created=true;
+  }else{
+    st.nombre=esc(nombre)||st.nombre;st.codigo_externo=codigo||st.codigo_externo;st.password=st.password||temp;st.activo=st.activo!==false;
+    users=users.map(u=>u.id_usuario===st.id_usuario?st:u);
+  }
+  s(DB.users,users);
+  if(curso)ensureEnrollment(st.id_usuario,curso.id_curso);
+  return {ok:true,student:st,created,password:temp};
+}
+function upsertGradeFromRow(row,student,curso){
+  const valRaw=rowVal(row,['nota','calificacion','valor']);
+  if(valRaw===''||valRaw===null||valRaw===undefined)return {ok:true,skipped:true};
+  const valor=parseFloat(String(valRaw).replace(',','.'));
+  if(isNaN(valor)||valor<0||valor>20)return {ok:false,error:'Nota inválida para '+student.email};
+  const evaluacion=String(rowVal(row,['evaluacion','evaluación','tipo_evaluacion'])||'Parcial').trim();
+  let fecha=String(rowVal(row,['fecha','fecha_evaluacion'])||new Date().toISOString().split('T')[0]).trim();
+  if(fecha.includes('/')){const p=fecha.split('/');if(p.length===3)fecha=`${p[2]}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}`;}
+  let notas=getNotas();
+  const existing=notas.find(n=>n.id_usuario===student.id_usuario&&n.id_curso===curso.id_curso&&String(n.evaluacion).toLowerCase()===evaluacion.toLowerCase()&&n.fecha===fecha);
+  if(existing){existing.valor=valor;notas=notas.map(n=>n.id_nota===existing.id_nota?existing:n);s(DB.notas,notas);return {ok:true,updated:true};}
+  notas.push({id_nota:newId('N'),id_usuario:student.id_usuario,id_curso:curso.id_curso,valor,evaluacion:esc(evaluacion),fecha});s(DB.notas,notas);return {ok:true,created:true};
+}
+function renderImportResult(targetId,summary,errors){
+  const el=document.getElementById(targetId);if(!el)return;
+  el.innerHTML=`<div class="import-summary"><b>Resultado de carga:</b> ${summary}</div>${errors.length?`<div class="import-errors"><b>Filas con observación:</b><br>${errors.slice(0,8).map(e=>esc(e)).join('<br>')}${errors.length>8?'<br>...':''}</div>`:''}`;
+}
+function processAcademicRows(rows,mode){
+  const user=getLoggedUser();if(!user||!isAdmin()){toast('Solo el Administrador puede realizar carga masiva','err');return;}
+  let createdStudents=0,updatedStudents=0,createdGrades=0,updatedGrades=0,enrolled=0,skipped=0;const errors=[];
+  const teacherCourseIds=null;
+  rows.forEach((row,idx)=>{
+    const line=idx+2;
+    const courseValue=rowVal(row,['curso','id_curso','codigo_curso','asignatura']);
+    const curso=findCourseByNameOrCode(courseValue);
+    if(!curso){errors.push(`Fila ${line}: curso no encontrado (${courseValue||'vacío'})`);skipped++;return;}
+    if(teacherCourseIds&&!teacherCourseIds.includes(curso.id_curso)){errors.push(`Fila ${line}: el docente no tiene permiso sobre el curso ${curso.nombre}`);skipped++;return;}
+    const beforeMats=getMatriculas().length;
+    const res=createOrUpdateStudentFromRow(row,curso,user);
+    if(!res.ok){errors.push(`Fila ${line}: ${res.error}`);skipped++;return;}
+    if(res.created)createdStudents++;else updatedStudents++;
+    if(getMatriculas().length>beforeMats)enrolled++;
+    if(mode==='students'&&String(rowVal(row,['nota','calificacion','valor'])).trim()==='')return;
+    const gRes=upsertGradeFromRow(row,res.student,curso);
+    if(!gRes.ok){errors.push(`Fila ${line}: ${gRes.error}`);skipped++;return;}
+    if(gRes.created)createdGrades++;if(gRes.updated)updatedGrades++;
+  });
+  renderUsers();renderNotas();renderDashboard();populateSelectors();
+  return {createdStudents,updatedStudents,createdGrades,updatedGrades,enrolled,skipped,errors};
+}
+function parseCSVText(text){
+  const rows=[];let row=[],cell='',q=false;
+  for(let i=0;i<text.length;i++){const ch=text[i],nx=text[i+1];
+    if(ch==='"'&&q&&nx==='"'){cell+='"';i++;continue;}
+    if(ch==='"'){q=!q;continue;}
+    if(ch===','&&!q){row.push(cell);cell='';continue;}
+    if((ch==='\n'||ch==='\r')&&!q){if(ch==='\r'&&nx==='\n')i++;row.push(cell);if(row.some(v=>String(v).trim()!==''))rows.push(row);row=[];cell='';continue;}
+    cell+=ch;
+  }
+  row.push(cell);if(row.some(v=>String(v).trim()!==''))rows.push(row);
+  if(!rows.length)return[];const headers=rows[0].map(normalizeHeader);
+  return rows.slice(1).map(r=>{const obj={};headers.forEach((h,i)=>obj[h]=r[i]??'');return obj;}).filter(r=>Object.values(r).some(v=>String(v).trim()!==''));
+}
+function importAcademicExcel(input,mode){
+  if(!input.files||!input.files[0])return;
+  if(!isAdmin()){toast('Solo el Administrador puede cargar archivos masivos','err');input.value='';return;}
+  const file=input.files[0];const lower=file.name.toLowerCase();
+  const target=mode==='grades'?'gradesImportResult':'studentImportResult';
+  const finish=(rows)=>{try{
+    if(!rows.length){toast('El archivo no contiene filas válidas','warn');return;}
+    const result=processAcademicRows(rows,mode);
+    const summary=`${result.createdStudents} alumno(s) creado(s), ${result.updatedStudents} actualizado(s), ${result.enrolled} matrícula(s), ${result.createdGrades} nota(s) nueva(s), ${result.updatedGrades} nota(s) actualizada(s), ${result.skipped} fila(s) omitida(s).`;
+    renderImportResult(target,summary,result.errors);
+    toast('Carga masiva procesada','ok');
+  }catch(err){console.error(err);toast('No se pudo procesar el archivo. Verifica la plantilla.','err');}};
+  if(lower.endsWith('.csv')){const reader=new FileReader();reader.onload=e=>finish(parseCSVText(String(e.target.result||'')));reader.readAsText(file,'UTF-8');return;}
+  if(typeof XLSX==='undefined'){toast('No se pudo cargar el lector de Excel. Para uso offline en Android, guarda la plantilla como CSV y vuelve a subirla.','err');return;}
+  const reader=new FileReader();
+  reader.onload=function(e){try{const data=new Uint8Array(e.target.result);const wb=XLSX.read(data,{type:'array'});finish(rowsFromFirstAcademicSheet(wb));}
+  catch(err){console.error(err);toast('No se pudo procesar el Excel. Verifica la plantilla.','err');}};
+  reader.readAsArrayBuffer(file);
+}
+
+function populateSelectors(){const user=getLoggedUser();const stu=visibleStudentsFor(user).sort((a,b)=>a.nombre.localeCompare(b.nombre));const doc=getUsers().filter(u=>u.rol==='docente').sort((a,b)=>a.nombre.localeCompare(b.nombre));const ins=getInst().sort((a,b)=>a.nombre.localeCompare(b.nombre));let cur=getCursos().sort((a,b)=>a.nombre.localeCompare(b.nombre));if(user?.rol==='docente')cur=cur.filter(c=>c.id_docente===user.id_usuario);const sO='<option value="">Selecciona un estudiante</option>'+stu.map(x=>`<option value="${esc(x.id_usuario)}">${esc(x.nombre)}</option>`).join('');const dO='<option value="">Selecciona un docente</option>'+doc.map(x=>`<option value="${esc(x.id_usuario)}">${esc(x.nombre)}</option>`).join('');const iO=ins.map(x=>`<option value="${esc(x.id_institucion)}">${esc(x.nombre)}</option>`).join('');const cO='<option value="">Selecciona un curso</option>'+cur.map(x=>`<option value="${esc(x.id_curso)}">${esc(x.nombre)} (${esc(x.periodo)})</option>`).join('');const el=id=>document.getElementById(id);if(el('stuSelect'))el('stuSelect').innerHTML=sO;if(el('planStudentSelect'))el('planStudentSelect').innerHTML=sO;if(el('notaStudent'))el('notaStudent').innerHTML=sO;if(el('notaCurso'))el('notaCurso').innerHTML=cO;if(el('obsStudent'))el('obsStudent').innerHTML=sO;if(el('newCursoDocente'))el('newCursoDocente').innerHTML=dO;if(el('newUserInst'))el('newUserInst').innerHTML=iO||'<option value="">Sin instituciones</option>';if(el('regInst'))el('regInst').innerHTML='<option value="">Selecciona institución</option>'+iO;if(el('regRole'))el('regRole').innerHTML='<option value="estudiante">Estudiante</option>';if(stu.length===1){if(el('stuSelect'))el('stuSelect').value=stu[0].id_usuario;if(el('planStudentSelect'))el('planStudentSelect').value=stu[0].id_usuario;}}
+function switchTab(tab,el){document.querySelectorAll('.form-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('login-form').classList.toggle('hidden',tab==='register');document.getElementById('register-form').classList.toggle('hidden',tab==='login');if(tab==='register')populateSelectors();}
+function toggleMobileMenu(){document.body.classList.toggle('mobile-menu-open');}
+function closeMobileMenu(){document.body.classList.remove('mobile-menu-open');}
+function goPage(page){closeMobileMenu();if(!canPage(page)){toast('No tienes permiso para abrir este módulo','err');page='dashboard';}const target=document.getElementById('page-'+page);if(!target){toast('Módulo no encontrado','err');page='dashboard';}document.querySelectorAll('[id^="page-"]').forEach(p=>p.classList.add('hidden'));document.getElementById('page-'+page).classList.remove('hidden');document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.querySelector('[data-page="'+page+'"]')?.classList.add('active');updateUIByRole();assertMenuConsistency();if(page==='usuarios')renderUsers();if(page==='instituciones')renderInstitutions();if(page==='cursos')renderCursos();if(page==='notas'){populateSelectors();renderNotas();}if(page==='observaciones'){populateSelectors();renderObservaciones();}if(page==='analisis'){populateSelectors();renderAnalysis();switchAnalysisTab('resumen');}if(page==='reportes')renderReportes();if(page==='orientacion'){populateSelectors();const autoStu=visibleStudentsFor();const sel=document.getElementById('stuSelect');if(autoStu.length===1&&sel){sel.value=autoStu[0].id_usuario;generateVocationalGuide();}else{document.getElementById('vocationalGuide').innerHTML='<p style="color:var(--gray);padding:40px;text-align:center">Selecciona un estudiante para ver su perfil vocacional</p>';document.getElementById('recsTable').innerHTML='';}}if(page==='config')renderUsers();if(page==='dashboard')renderDashboard();const main=document.querySelector('.main-content');if(main)main.scrollTop=0;}
+function goHome(){if(document.getElementById('app-page').classList.contains('hidden'))return;goPage('dashboard');}
+const MODAL_MAP={'forgotPassword':'modal-forgot','newUser':'modal-newuser','newInstitution':'modal-newinst','newCurso':'modal-newcurso','newNota':'modal-newnota','newObservacion':'modal-newobs','pdfScope':'modal-pdfscope'};
+function showModal(type,presetStudentId){if(['newUser','newInstitution','newCurso'].includes(type)&&!requireAdmin())return;if(type==='newNota'&&!canManageGrades()){toast('No tienes permiso para registrar notas','err');return;}if(type==='newObservacion'&&!canManageObservations()){toast('No tienes permiso para registrar observaciones','err');return;}if(type==='newNota'){const eid=document.getElementById('notaEditId');if(eid)eid.value='';const t=document.querySelector('#modal-newnota .modal-title');if(t)t.textContent='📝 Registrar nota';const b=document.getElementById('notaSubmitBtn');if(b)b.textContent='Registrar nota';const v=document.getElementById('notaValue');if(v)v.value='';}if(type==='newObservacion'){const eid=document.getElementById('obsEditId');if(eid)eid.value='';const t=document.querySelector('#modal-newobs .modal-title');if(t)t.textContent='🗒️ Nueva observación';const b=document.getElementById('obsSubmitBtn');if(b)b.textContent='Guardar observación';const tx=document.getElementById('obsTexto');if(tx)tx.value='';}document.getElementById(MODAL_MAP[type]).classList.add('show');populateSelectors();if(type==='newObservacion'&&presetStudentId){const sel=document.getElementById('obsStudent');if(sel)sel.value=presetStudentId;}}
+function cancelNotaModal(){const eid=document.getElementById('notaEditId');if(eid)eid.value='';const t=document.querySelector('#modal-newnota .modal-title');if(t)t.textContent='📝 Registrar nota';const b=document.getElementById('notaSubmitBtn');if(b)b.textContent='Registrar nota';closeModal('newNota');}
+function cancelObsModal(){const eid=document.getElementById('obsEditId');if(eid)eid.value='';const t=document.querySelector('#modal-newobs .modal-title');if(t)t.textContent='🗒️ Nueva observación';const b=document.getElementById('obsSubmitBtn');if(b)b.textContent='Guardar observación';closeModal('newObservacion');}
+
+function setProgress(id,statusId,msg,doneMsg){
+  const bar=document.getElementById(id+'Bar'),status=document.getElementById(id+'Status');
+  if(!bar||!status)return;
+  bar.style.width='0%';status.textContent=msg;
+  let pct=0;const timer=setInterval(()=>{pct+=25;bar.style.width=pct+'%';if(pct>=100){clearInterval(timer);status.textContent=doneMsg;}},180);
+}
+function simulateLmsSync(source){
+  if(!isAdmin()){toast('Solo el administrador puede simular integraciones','err');return;}
+  const label=source==='moodle'?'Moodle':'Canvas';
+  setProgress(source,source+'Status','Conectando con '+label+'...','Sincronización '+label+' completada');
+  setTimeout(()=>{
+    const courses=getCursos().length, notes=getNotas().length, teachers=getUsers().filter(u=>u.rol==='docente').length, students=getUsers().filter(u=>u.rol==='estudiante').length;
+    const now=new Date().toLocaleString('es-PE');
+    document.getElementById('integrationResult').innerHTML=`<b>✅ ${label} sincronizado correctamente</b><br>• ${courses} cursos detectados<br>• ${notes} notas académicas disponibles<br>• ${teachers} docentes vinculados<br>• ${students} estudiantes procesados<br><br><b>Última sincronización:</b> ${now}<br><span class="mini-text">Simulación MVP: no se conectó a una API real; se usaron los datos internos del prototipo.</span>`;
+    toast(label+' sincronizado en modo simulación','ok');
+  },900);
+}
+function showCurriculumSimulation(){
+  if(!isAdmin()){toast('Solo el administrador puede ver esta simulación','err');return;}
+  document.getElementById('integrationResult').innerHTML=`<b>🏛️ Marco curricular referencial cargado</b><br>• Matemática → razonamiento lógico y cuantitativo<br>• Comunicación → comprensión, expresión y redacción<br>• Ciencia y Tecnología → análisis científico<br>• Ciencias Sociales → pensamiento crítico y ciudadanía<br>• Arte → creatividad y expresión<br><br><span class="mini-text">MINEDU/UGEL se presenta como actor externo referencial dentro del ecosistema del proyecto.</span>`;
+}
+function simulateMlEngine(){
+  if(!isAdmin()){toast('Solo el administrador puede ejecutar esta simulación','err');return;}
+  setProgress('ml','mlStatus','Analizando notas y afinidades...','Motor MVP finalizado');
+  setTimeout(()=>{
+    const analysis=visibleAnalysisFor(getLoggedUser());
+    const best=analysis.slice().sort((a,b)=>b.promedio-a.promedio)[0];
+    const st=best?getUsers().find(u=>u.id_usuario===best.id_usuario):null;
+    const name=st?st.nombre:'estudiante de prueba';
+    const avg=best?best.promedio:'—';
+    document.getElementById('integrationResult').innerHTML=`<b>🤖 Resultado del motor de orientación MVP</b><br>• Estudiantes analizados: ${analysis.length}<br>• Alumno destacado de la muestra: ${esc(name)}<br>• Promedio referencial: ${avg}/20<br>• Reglas usadas: Matemática + CTA + Computación → Ingeniería/Tecnología; Comunicación + Ciencias Sociales → Humanidades; Arte + Comunicación → Artes.<br><br><b>Salida esperada:</b> perfil vocacional + plan de mejora + PDF autorizado.`;
+    toast('Motor MVP ejecutado','ok');
+  },900);
+}
+
+function closeModal(type){document.getElementById(MODAL_MAP[type]).classList.remove('show');}
+function markRoleButtons(){document.querySelector('#page-instituciones .btn-primary')?.classList.add('admin-only');document.querySelector('#page-usuarios .btn-primary')?.classList.add('admin-only');document.querySelector('#page-cursos .btn-primary')?.classList.add('admin-only');document.querySelector('#page-notas .btn-primary')?.classList.add('grade-manage-only');document.querySelector('#page-analisis .btn-primary')?.classList.add('admin-only');document.querySelectorAll('#page-reportes .admin-report-action').forEach(b=>b.classList.add('admin-only'));document.querySelector('#page-config .btn-primary')?.classList.add('admin-only');}
+
+
+/* === v28: PDF offline completo y compatible con móvil ===
+   - No usa Internet ni CDN.
+   - Genera PDF real por Blob.
+   - En Android intenta compartir/guardar el archivo con navigator.share(files).
+   - Si el navegador bloquea la descarga, abre el PDF en una pestaña para guardarlo manualmente.
+   - El informe académico ahora incluye análisis + cursos + notas + orientación + plan semanal.
+*/
+function pdfNormalizeText(value){
+  return String(value ?? '')
+    .replace(/<br\s*\/?>(\s*)/gi, '\n')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/[📊📈📄📥🎯👨‍👩‍👧👨‍🏫🎓👑✅🔄🚦🤖🧩🔐🔗🏫👥📚📝⚙️🌙☀️📌🟢🟡🔴]/g, '')
+    .replace(/[•]/g, '-')
+    .replace(/\s+\n/g, '\n')
+    .replace(/\n\s+/g, '\n')
+    .replace(/[ \t]{2,}/g, ' ')
+    .trim();
+}
+function pdfFileName(name){
+  return String(name || 'SADA_reporte')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-zA-Z0-9_-]+/g,'_')
+    .replace(/^_+|_+$/g,'') + '.pdf';
+}
+function isLikelyMobile(){return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || '');}
+/* === v29: PDF a color con semaforos ===
+   Genera un PDF real (sin librerias externas) que ademas del texto dibuja:
+   - Encabezados con banner de color.
+   - Puntos de semaforo (verde/ambar/rojo) junto a las lineas que mencionan
+     riesgo, tendencia o estado de un curso, para que se entienda de un
+     vistazo sin tener que leer todo el texto.
+   - Una leyenda de colores al inicio del documento.
+*/
+function pdfToneForLine(line){
+  // Detecta el "semaforo" de una linea ya generada por los bloques del reporte.
+  // Se basa en las palabras que el propio sistema usa (Alto/Medio/Bajo,
+  // Rojo/Ambar/Verde, Ascendente/Descendente/Estable), por eso funciona sin
+  // tener que tocar cada función que arma el contenido del PDF.
+  if(/(:|\/)\s*Alto\b/.test(line) || /\bRojo\b/.test(line) || /\bDescendente\b/.test(line)) return 'red';
+  if(/(:|\/)\s*Medio\b/.test(line) || /\bAmbar\b/.test(line) || /\bAmarillo\b/.test(line) || /\bEstable\b/.test(line)) return 'amber';
+  if(/(:|\/)\s*Bajo\b/.test(line) || /\bVerde\b/.test(line) || /\bAscendente\b/.test(line)) return 'green';
+  return null;
+}
+function buildPdfBlob({title, subtitle, blocks}){
+  const fechaEmision = new Date().toLocaleString('es-PE');
+  const lines = [];
+  const pushLine = (text, kind='row') => lines.push({text, kind, tone: (kind==='row'||kind==='text')?pdfToneForLine(text):null});
+  const add = (text='', kind='row') => {
+    String(text ?? '').split(/\n+/).forEach(part=>{
+      const clean = pdfNormalizeText(part)
+        .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+        .replace(/[^\x20-\x7E]/g,' ')
+        .replace(/\s{2,}/g,' ')
+        .trim();
+      if(!clean){ pushLine('', kind); return; }
+      const max = 90;
+      let t = clean;
+      while(t.length > max){
+        let cut = t.lastIndexOf(' ', max);
+        if(cut < 35) cut = max;
+        pushLine(t.slice(0,cut).trim(), kind);
+        t = t.slice(cut).trim();
+      }
+      if(t) pushLine(t, kind);
+    });
+  };
+
+  add(title || 'SADA Analytics', 'title');
+  add(subtitle || '', 'subtitle');
+  add('Emitido: ' + fechaEmision, 'meta');
+  pushLine('Guia de colores: Verde = buen desempeno / bajo riesgo, Ambar = atencion, Rojo = riesgo alto', 'legend');
+  lines.push({text:'', kind:'blank'});
+  (blocks||[]).forEach(block=>{
+    if(block.heading){ lines.push({text:'', kind:'blank'}); add(block.heading, 'heading'); }
+    if(block.text){ add(block.text, 'text'); }
+    if(block.rows && Array.isArray(block.rows)) block.rows.forEach(row=>add('- ' + row, 'row'));
+    if(block.divider) lines.push({text:'', kind:'divider'});
+  });
+  lines.push({text:'', kind:'blank'});
+  add('Documento generado automaticamente desde SADA Analytics. La informacion respeta los permisos del rol autenticado.', 'footer');
+
+  const pageWidth = 595.28, pageHeight = 841.89;
+  const marginX = 42, startY = 790, lineH = 14, contentWidth = pageWidth - marginX*2;
+  const bottomLimit = 55;
+  // Paginamos midiendo el alto real de cada linea (headings y leyendas ocupan
+  // mas espacio), en vez de un numero fijo de lineas por pagina.
+  const pages=[]; let current=[]; let yCursor=startY;
+  const heightFor = (kind)=> kind==='blank' ? lineH*0.6 : kind==='divider' ? lineH*0.9 : (kind==='title'?22:kind==='heading'?20:lineH);
+  lines.forEach(entry=>{
+    const h = heightFor(entry.kind);
+    if(yCursor - h < bottomLimit){ pages.push(current); current=[]; yCursor=startY; }
+    current.push(entry); yCursor -= h;
+  });
+  if(current.length) pages.push(current);
+  if(!pages.length) pages.push([{text:'SADA Analytics', kind:'title', tone:null}]);
+
+  function escPdf(str){return String(str).replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)');}
+  function rgb(c){return c.map(v=>v.toFixed(3)).join(' ');}
+  const COLORS = {
+    brand:[0.106,0.165,0.290], gray:[0.420,0.447,0.502], dark:[0.122,0.161,0.216],
+    bannerBg:[0.918,0.945,0.980], ruleColor:[0.835,0.871,0.922],
+    green:[0.086,0.639,0.290], amber:[0.961,0.620,0.043], red:[0.863,0.149,0.149], white:[1,1,1]
+  };
+  const toneColor = t => t==='red'?COLORS.red:t==='amber'?COLORS.amber:t==='green'?COLORS.green:COLORS.gray;
+
+  const objects=[];
+  function obj(content){objects.push(content); return objects.length;}
+  const catalogId = obj('');
+  const pagesId = obj('');
+  const fontId = obj('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>');
+  const fontBoldId = obj('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>');
+  const pageIds=[];
+
+  pages.forEach((pageLines)=>{
+    let stream=''; let inText=false;
+    const openText=()=>{ if(!inText){ stream+='BT\n'; inText=true; } };
+    const closeText=()=>{ if(inText){ stream+='ET\n'; inText=false; } };
+    let y=startY;
+    pageLines.forEach(({text, kind, tone})=>{
+      if(kind==='blank'){ y -= lineH*0.6; return; }
+      if(kind==='divider'){
+        closeText();
+        stream += `${rgb(COLORS.ruleColor)} rg\n${marginX} ${(y-6).toFixed(2)} ${contentWidth.toFixed(2)} 2 re f\n`;
+        y -= lineH*0.9;
+        return;
+      }
+      let size=10.3, color=COLORS.dark, textX=marginX+14, font='F1';
+      if(kind==='title'){ size=18; color=COLORS.brand; textX=marginX; font='F2'; }
+      else if(kind==='subtitle'){ size=11; color=COLORS.gray; textX=marginX; }
+      else if(kind==='meta'){ size=9; color=COLORS.gray; textX=marginX; }
+      else if(kind==='footer'){ size=8.3; color=COLORS.gray; textX=marginX; }
+      else if(kind==='legend'){
+        size=9; color=COLORS.gray; textX=marginX+58;
+        closeText();
+        stream += `${rgb(COLORS.green)} rg\n${marginX} ${(y-2).toFixed(2)} 8 8 re f\n`;
+        stream += `${rgb(COLORS.amber)} rg\n${(marginX+18).toFixed(2)} ${(y-2).toFixed(2)} 8 8 re f\n`;
+        stream += `${rgb(COLORS.red)} rg\n${(marginX+36).toFixed(2)} ${(y-2).toFixed(2)} 8 8 re f\n`;
+      }else if(kind==='heading'){
+        size=12.5; color=COLORS.brand; textX=marginX+8; font='F2';
+        closeText();
+        stream += `${rgb(COLORS.bannerBg)} rg\n${(marginX-6).toFixed(2)} ${(y-4).toFixed(2)} ${(contentWidth+12).toFixed(2)} 18 re f\n`;
+      }else if(kind==='row' || kind==='text'){
+        size=10.3; color=COLORS.dark; textX=marginX+14;
+        if(tone){
+          closeText();
+          stream += `${rgb(toneColor(tone))} rg\n${marginX} ${(y-2).toFixed(2)} 8 8 re f\n`;
+        }
+      }
+      openText();
+      stream += `${rgb(color)} rg\n/${font} ${size} Tf\n1 0 0 1 ${textX.toFixed(2)} ${y.toFixed(2)} Tm (${escPdf(text)}) Tj\n`;
+      y -= lineH + (size>12?4:0);
+    });
+    closeText();
+    const streamLength = new TextEncoder().encode(stream).length;
+    const contentId = obj(`<< /Length ${streamLength} >>\nstream\n${stream}\nendstream`);
+    const pageId = obj(`<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 ${fontId} 0 R /F2 ${fontBoldId} 0 R >> >> /Contents ${contentId} 0 R >>`);
+    pageIds.push(pageId);
+  });
+  objects[catalogId-1] = `<< /Type /Catalog /Pages ${pagesId} 0 R >>`;
+  objects[pagesId-1] = `<< /Type /Pages /Kids [${pageIds.map(id=>id+' 0 R').join(' ')}] /Count ${pageIds.length} >>`;
+
+  let pdf='%PDF-1.4\n';
+  const offsets=[0];
+  objects.forEach((content,i)=>{ offsets[i+1]=pdf.length; pdf += `${i+1} 0 obj\n${content}\nendobj\n`; });
+  const xref=pdf.length;
+  pdf += `xref\n0 ${objects.length+1}\n0000000000 65535 f \n`;
+  for(let i=1;i<=objects.length;i++){ pdf += String(offsets[i]).padStart(10,'0') + ' 00000 n \n'; }
+  pdf += `trailer\n<< /Size ${objects.length+1} /Root ${catalogId} 0 R >>\nstartxref\n${xref}\n%%EOF`;
+  return new Blob([pdf], {type:'application/pdf'});
+}
+async function createDirectPDF({title, subtitle, filename, blocks}){
+  try{
+    const finalName = pdfFileName(filename);
+    const blob = buildPdfBlob({title, subtitle, blocks});
+    const file = new File([blob], finalName, {type:'application/pdf'});
+
+    // Android / móvil: primero intenta compartir/guardar archivo. Es más fiable que a.download en content://.
+    if(isLikelyMobile() && navigator.canShare && navigator.canShare({files:[file]})){
+      try{
+        await navigator.share({files:[file], title: title || 'SADA PDF', text:'Informe generado por SADA Analytics'});
+        toast('PDF listo para guardar o compartir','ok');
+        return true;
+      }catch(shareErr){
+        // Si el usuario cancela, seguimos con descarga normal.
+        console.warn('Share cancelado o no disponible:', shareErr);
+      }
+    }
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = finalName;
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>{try{URL.revokeObjectURL(url);a.remove();}catch(e){}}, 2500);
+
+    // Fallback móvil: abre el PDF si la descarga fue bloqueada por Android/content://.
+    if(isLikelyMobile()){
+      setTimeout(()=>{
+        try{
+          const w = window.open(url, '_blank');
+          if(w) toast('Si no se descargó, usa el menú del visor para guardar el PDF','warn');
+        }catch(e){}
+      }, 600);
+    }
+    return true;
+  }catch(err){
+    console.error(err);
+    toast('No se pudo generar el PDF offline. Intenta nuevamente.','err');
+    return false;
+  }
+}
+function currentPdfStudents(){
+  const user=getLoggedUser();
+  if(!user)return [];
+  const students=visibleStudentsFor(user);
+  if(isEstudiante())return [user];
+  return students;
+}
+function buildStudentFullReportBlocks(student){
+  const cursos=getCursos();
+  const notas=getNotas().filter(n=>n.id_usuario===student.id_usuario);
+  const visibleCourseIds=[...new Set(notas.map(n=>n.id_curso))];
+  const courseAvgs=courseAveragesForStudent(student.id_usuario);
+  const analysis=buildAnalysisForStudent(student);
+  const mot=motivationForAnalysis(analysis,student.nombre);
+  const orientation=calculateOrientationForStudent(student.id_usuario);
+  const weeks=weeklyGroupsForStudent(student.id_usuario);
+
+  const noteRows = notas.length ? notas.map(n=>{
+    const curso=lookupName(cursos,'id_curso',n.id_curso,'nombre');
+    return `${curso}: ${n.valor}/20 | ${n.evaluacion} | ${fmtDate(n.fecha)}`;
+  }) : ['No hay notas registradas para este estudiante.'];
+
+  const courseRows = visibleCourseIds.length ? visibleCourseIds.map(id=>{
+    const c=cursos.find(x=>x.id_curso===id);
+    const docente=c?lookupName(getUsers(),'id_usuario',c.id_docente,'nombre'):'Sin docente';
+    const avg=(courseAvgs.find(x=>x.id_curso===id)||{}).avg || 'Sin promedio';
+    return `${c?c.nombre:'Curso'} | Docente: ${docente} | Promedio: ${avg}/20`;
+  }) : ['No hay cursos visibles asociados.'];
+
+  const orientRows = orientation ? orientation.areas.slice(0,5).map((a,i)=>`${i+1}. ${a.area}: ${a.puntaje}% | ${a.base}`) : ['No se pudo calcular orientación.'];
+  const topArea = orientation && orientation.areas.length ? orientation.areas[0].area : 'Pendiente';
+  const weekRows = weeks.length ? weeks.map(w=>`${w.semana}: promedio ${w.promedio}/20 | ${w.notas} nota(s) | ${w.cursos}`) : ['Aún no hay suficientes notas para agrupar por semana.'];
+  const weakest=courseAvgs[0], strongest=courseAvgs[courseAvgs.length-1];
+  const actions=[
+    weakest?`Reforzar ${weakest.course}: practicar 20 minutos diarios y pedir retroalimentacion.`:'Registrar mas notas para construir un plan mas confiable.',
+    strongest?`Mantener fortaleza en ${strongest.course}: conservar habitos y asistencia.`:'Mantener asistencia, orden y rutina semanal.',
+    'Revisar este informe con padre, tutor o docente.',
+    'Actualizar notas cada semana para recalcular el plan.'
+  ];
+
+  return [
+    {heading:'Datos del estudiante', text:`Estudiante: ${student.nombre}\nCorreo: ${student.email||'No registrado'}\nRol del documento: ${roleDisplayName((getLoggedUser()||{}).rol||'usuario')}`, divider:true},
+    {heading:'Resumen academico', text:`Promedio general: ${analysis.promedio}/20\nBase del promedio: ${analysis.cantidad_notas} nota(s) usadas\nCursos evaluados: ${analysis.cursos_evaluados}\nDetalle de cursos: ${analysis.detalle_cursos}\nTendencia: ${analysis.tendencia}\nRiesgo academico/desercion: ${analysis.riesgo_desercion}\nNotas desaprobadas: ${analysis.desaprobadas}`, divider:true},
+    {heading:'Cursos visibles', rows:courseRows, divider:true},
+    {heading:'Notas registradas', rows:noteRows, divider:true},
+    {heading:'Orientacion vocacional', text:`Area de mayor afinidad: ${topArea}\nLa recomendacion se calcula ponderando notas por curso. No es aleatoria; es una regla MVP basada en desempeno academico.`, rows:orientRows, divider:true},
+    {heading:'Plan de mejora semanal', rows:weekRows, divider:true},
+    {heading:'Acciones recomendadas', rows:actions, divider:true},
+    {heading:'Motivacion', text:`${mot.frase}\n${mot.ref}`, divider:true},
+    {heading:'Nota de alcance', text:'Este informe es referencial. Debe complementarse con intereses personales, entrevista vocacional, acompanamiento familiar y criterio docente.'}
+  ];
+}
+function openPdfScopeModal(){
+  const user=getLoggedUser();
+  if(!user){toast('Debes iniciar sesión','err');return;}
+  if(!['admin','estudiante','padre','docente'].includes(user.rol)){toast('No tienes permiso para descargar el reporte','err');return;}
+  const students=currentPdfStudents();
+  if(!students.length){toast('No hay estudiantes visibles para generar PDF','warn');return;}
+  if(students.length===1){downloadVisibleReportPDF(students[0].id_usuario);return;}
+  const sel=document.getElementById('pdfScopeStudent');
+  if(sel){
+    const sorted=[...students].sort((a,b)=>a.nombre.localeCompare(b.nombre));
+    sel.innerHTML=`<option value="all">📋 Todos los alumnos visibles (${students.length})</option>`+sorted.map(s=>`<option value="${esc(s.id_usuario)}">${esc(s.nombre)}</option>`).join('');
+  }
+  document.getElementById(MODAL_MAP.pdfScope).classList.add('show');
+}
+function confirmPdfScopeDownload(){
+  const val=document.getElementById('pdfScopeStudent')?.value||'all';
+  closeModal('pdfScope');
+  if(val==='all')downloadVisibleReportPDF();else downloadVisibleReportPDF(val);
+}
+async function downloadVisibleReportPDF(scopeStudentId){
+  const user=getLoggedUser();
+  if(!user){toast('Debes iniciar sesión','err');return;}
+  if(!['admin','estudiante','padre','docente'].includes(user.rol)){toast('No tienes permiso para descargar el reporte','err');return;}
+  let students=currentPdfStudents();
+  if(!students.length){toast('No hay estudiantes visibles para generar PDF','warn');return;}
+  if(scopeStudentId){
+    if(!students.some(s=>s.id_usuario===scopeStudentId)){toast('No tienes permiso para descargar el informe de ese alumno','err');return;}
+    students=students.filter(s=>s.id_usuario===scopeStudentId);
+  }
+  const fecha=fmtDate(new Date().toISOString().split('T')[0]);
+  const blocks=[{heading:'Datos del usuario que descarga', text:`Usuario: ${user.nombre}\nRol: ${roleDisplayName(user.rol)}\nFecha: ${fecha}\nAlcance: ${scopeStudentId?'un alumno especifico':'informacion visible segun permisos'}.`, divider:true}];
+  students.forEach((student,idx)=>{
+    blocks.push({heading:`INFORME ${idx+1}: ${student.nombre}`, text:'Informe academico completo del estudiante.', divider:true});
+    blocks.push(...buildStudentFullReportBlocks(student));
+  });
+  const name = students.length===1 ? students[0].nombre : user.nombre;
+  const ok=await createDirectPDF({title:'SADA Analytics - Informe Academico Completo', subtitle:`Generado el ${fecha}`, filename:`Informe_SADA_${name}_${fecha.replace(/\//g,'-')}`, blocks});
+  if(ok)toast('Informe PDF generado con datos completos','ok');
+}
+async function downloadOrientationPDF(){
+  const studentId=contextStudentId('stuSelect');
+  if(!studentId){toast('Selecciona un estudiante primero','warn');return;}
+  if(!visibleStudentsFor().some(s=>s.id_usuario===studentId)){toast('No tienes permiso para descargar esta orientación','err');return;}
+  const data=calculateOrientationForStudent(studentId);
+  if(!data){toast('No se pudo generar la orientación','err');return;}
+  const fecha=fmtDate(new Date().toISOString().split('T')[0]);
+  const {student,analysis,areas,mot}=data;
+  const areaRows=areas.map((a,i)=>`${i+1}. ${a.area} - ${a.puntaje}% | Logica: ${a.base}`);
+  const blocks=[
+    {heading:'Datos del estudiante', text:`Estudiante: ${student.nombre}\nCorreo: ${student.email||'No registrado'}\nPromedio: ${analysis.promedio}/20\nBase: ${analysis.cantidad_notas||buildAnalysisForStudent(student).cantidad_notas} nota(s)\nCursos analizados: ${analysis.detalle_cursos||buildAnalysisForStudent(student).detalle_cursos}\nTendencia: ${analysis.tendencia}\nRiesgo: ${analysis.riesgo_desercion}`, divider:true},
+    {heading:'Area de mayor afinidad', text:`${areas[0]?areas[0].area:'Pendiente'}\nPuntaje: ${areas[0]?areas[0].puntaje:'0'}%`, divider:true},
+    {heading:'Motivacion personalizada', text:`${mot.frase}\n${mot.ref}`, divider:true},
+    {heading:'Todas las areas sugeridas', rows:areaRows, divider:true},
+    {heading:'Como se calcula', text:'SADA pondera las notas por curso. Ejemplo: Tecnologia usa Computacion 50%, Matematica 40% e Ingles 10%. El area con mayor puntaje queda como mayor afinidad.'},
+    {heading:'Nota importante', text:'La orientacion es referencial y debe complementarse con intereses personales, dialogo familiar, entrevista con tutor y pruebas vocacionales.'}
+  ];
+  const ok=await createDirectPDF({title:'SADA Analytics - Orientacion Vocacional', subtitle:`Generado el ${fecha}`, filename:`Orientacion_SADA_${student.nombre}_${fecha.replace(/\//g,'-')}`, blocks});
+  if(ok)toast('PDF de orientación generado','ok');
+}
+async function downloadPlanPDF(){
+  const studentId=contextStudentId('planStudentSelect');
+  if(!studentId){toast('Selecciona un estudiante primero','warn');return;}
+  if(!visibleStudentsFor().some(s=>s.id_usuario===studentId)){toast('No tienes permiso para descargar este plan','err');return;}
+  const student=getUsers().find(u=>u.id_usuario===studentId);
+  if(!student){toast('No se encontró el estudiante','err');return;}
+  const analysis=buildAnalysisForStudent(student);
+  const mot=motivationForAnalysis(analysis,student.nombre);
+  const weeks=weeklyGroupsForStudent(studentId);
+  const courses=courseAveragesForStudent(studentId);
+  const fecha=fmtDate(new Date().toISOString().split('T')[0]);
+  const weekRows=weeks.length?weeks.map(w=>`${w.semana}: promedio ${w.promedio}/20 | ${w.notas} nota(s) | Cursos: ${w.cursos}`):['Sin notas suficientes para agrupar por semana.'];
+  const courseRows=courses.length?courses.map(c=>`${c.course}: ${c.avg}/20 | Estado: ${c.avg>=14?'Verde / buen avance':c.avg>=11?'Ambar / reforzar':'Rojo / atencion prioritaria'}`):['Sin cursos visibles.'];
+  const weakest=courses[0];
+  const strongest=courses[courses.length-1];
+  const actions=[
+    weakest?`Prioridad: reforzar ${weakest.course} con 20 minutos diarios de practica.`:'Prioridad: registrar mas notas para construir un plan confiable.',
+    strongest?`Mantener fortaleza: conservar habitos en ${strongest.course}.`:'Mantener habitos de estudio y asistencia.',
+    'Revisar avances cada semana y pedir retroalimentacion al docente.',
+    'Compartir este plan con el padre, tutor o docente para acompanamiento.'
+  ];
+  const blocks=[
+    {heading:'Resumen del plan', text:`Estudiante: ${student.nombre}\nPromedio: ${analysis.promedio}/20\nBase: ${analysis.cantidad_notas} nota(s)\nTendencia: ${analysis.tendencia}\nRiesgo: ${analysis.riesgo_desercion}`, divider:true},
+    {heading:'Motivacion', text:`${mot.frase}\n${mot.ref}`, divider:true},
+    {heading:'Desempeno por semana', rows:weekRows, divider:true},
+    {heading:'Semaforo por curso', rows:courseRows, divider:true},
+    {heading:'Acciones recomendadas', rows:actions}
+  ];
+  const ok=await createDirectPDF({title:'SADA Analytics - Plan de Mejora Semanal', subtitle:`Generado el ${fecha}`, filename:`Plan_Semanal_SADA_${student.nombre}_${fecha.replace(/\//g,'-')}`, blocks});
+  if(ok)toast('PDF del plan generado','ok');
+}
+
+initDB();markRoleButtons();populateSelectors();try{const l=JSON.parse(localStorage.getItem(DB.logged)||'null');if(l){const fresh=getUsers().find(u=>u.id_usuario===l.id_usuario);if(fresh&&fresh.rol&&fresh.nombre)goApp(fresh);}}catch(e){}
+
+
+
+/* v24 QA: PDF offline por Blob, sin jsPDF/CDN; textos de análisis corregidos por rol. */
+/* v18 QA: menú estricto por rol validado también en responsive móvil; orientación autoselecciona estudiante cuando corresponde. */
+/* v17 QA: navegación estricta por rol; se eliminan módulos no operativos para estudiante/padre/docente y se conserva trazabilidad del Word en módulos administrativos. */
+</script>
+</body>
+</html>
