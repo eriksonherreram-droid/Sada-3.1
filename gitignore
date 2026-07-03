@@ -1,0 +1,34 @@
+# Dependencias
+node_modules/
+package-lock.json
+yarn.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# Datos sensibles
+.env
+.env.local
+secrets/
+
+# Caché del navegador
+.cache/
+dist/
+
+# Archivos temporales
+tmp/
+temp/
+
+# Sistema operativo
+Thumbs.db
+.DS_Store

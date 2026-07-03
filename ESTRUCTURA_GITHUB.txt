@@ -1,0 +1,194 @@
+═══════════════════════════════════════════════════════════════════════════════
+ESTRUCTURA RECOMENDADA PARA GITHUB
+═══════════════════════════════════════════════════════════════════════════════
+
+Tu repositorio en GitHub debería verse así:
+
+sada-analytics/
+│
+├── README.md                          ← Descripción principal (lo primero que ven)
+├── SADA_Professional.html             ← Aplicación web principal (NO renombrar)
+├── .gitignore                         ← Archivos a ignorar en Git
+├── LICENSE                            ← Licencia MIT (opcional pero recomendado)
+│
+├── docs/
+│   ├── MANUAL_USUARIO.md              ← Guía de usuario (convertido de .txt a .md)
+│   ├── ARQUITECTURA.md                ← Explicación técnica (opcional)
+│   └── DIAGRAMA_ER.md                 ← Explicación del modelo (opcional)
+│
+├── data/
+│   └── Base_Datos_SADA.xlsx           ← Datos de ejemplo
+│
+└── assets/
+    ├── logo.svg                       ← Logo SADA (opcional)
+    └── screenshots/                   ← Capturas de pantalla
+        ├── login.png
+        ├── dashboard.png
+        ├── usuarios.png
+        └── analisis.png
+
+═══════════════════════════════════════════════════════════════════════════════
+PASOS PARA CREAR EL REPOSITORIO EN GITHUB
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 1: Crear el repositorio en GitHub
+────────────────────────────────────────
+1. Ve a https://github.com/new
+2. Repository name: "sada-analytics"
+3. Description: "Plataforma integral de análisis académico"
+4. Selecciona: Public (para que vean tu trabajo)
+5. Crea el repositorio
+
+PASO 2: Clonar el repositorio localmente
+─────────────────────────────────────────
+$ git clone https://github.com/TU_USUARIO/sada-analytics.git
+$ cd sada-analytics
+
+PASO 3: Agregar los archivos
+────────────────────────────
+Coloca en la carpeta sada-analytics:
+  ✓ README.md
+  ✓ SADA_Professional.html
+  ✓ .gitignore
+  ✓ LICENSE (opcional)
+  
+  Y las carpetas:
+  ✓ docs/
+    └── MANUAL_USUARIO.md
+  ✓ data/
+    └── Base_Datos_SADA.xlsx
+  ✓ assets/
+    └── screenshots/
+
+PASO 4: Subir a GitHub
+──────────────────────
+$ git add .
+$ git commit -m "Initial commit: SADA Analytics v1.0"
+$ git push origin main
+
+PASO 5: Verificar en GitHub
+────────────────────────────
+Ve a https://github.com/TU_USUARIO/sada-analytics
+¡Deberías ver todos tus archivos!
+
+═══════════════════════════════════════════════════════════════════════════════
+QUÉ SUBIR A GITHUB (Resumido)
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ SUBE ESTOS ARCHIVOS:
+  • SADA_Professional.html
+  • Base_Datos_SADA.xlsx
+  • README.md
+  • MANUAL_USUARIO.txt (o convertido a .md)
+  • .gitignore
+  • LICENSE (opcional)
+
+❌ NO SUBAS ESTOS:
+  • node_modules/
+  • .env
+  • Archivos de sistema (.DS_Store, Thumbs.db)
+  • Archivos de IDE (.vscode/, .idea/)
+
+═══════════════════════════════════════════════════════════════════════════════
+ARCHIVO .gitignore
+═══════════════════════════════════════════════════════════════════════════════
+
+Ya está creado. Es un archivo que le dice a Git qué NO subir a GitHub.
+Contiene patrones de archivos a ignorar (temporales, de desarrollo, etc)
+
+═══════════════════════════════════════════════════════════════════════════════
+COMANDOS GIT BÁSICOS
+═══════════════════════════════════════════════════════════════════════════════
+
+1. CLONAR REPOSITORIO:
+   $ git clone https://github.com/usuario/sada-analytics.git
+
+2. AGREGAR CAMBIOS:
+   $ git add .                  # Agregar todos los archivos
+   $ git add archivo.html       # Agregar archivo específico
+
+3. HACER COMMIT:
+   $ git commit -m "Descripción del cambio"
+
+4. SUBIR A GITHUB:
+   $ git push origin main       # Subir a rama principal
+
+5. VER ESTADO:
+   $ git status                 # Ver qué cambios hay
+   $ git log                    # Ver historial de commits
+
+6. ACTUALIZAR DESDE GITHUB:
+   $ git pull origin main       # Descargar cambios
+
+═══════════════════════════════════════════════════════════════════════════════
+EJEMPLO DE COMMITS BUENOS
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ BUENO:
+   git commit -m "Add authentication module with login and registration"
+   git commit -m "Fix responsive design on mobile devices"
+   git commit -m "Implement analysis calculation algorithm"
+
+❌ MALO:
+   git commit -m "actualización"
+   git commit -m "arreglado"
+   git commit -m "cambios"
+
+═══════════════════════════════════════════════════════════════════════════════
+CONVERTIR .txt A .md (MARKDOWN)
+═══════════════════════════════════════════════════════════════════════════════
+
+Es buena práctica convertir el manual a .md para que se vea mejor en GitHub.
+
+1. Renombra: SADA_MANUAL_USUARIO.txt → MANUAL_USUARIO.md
+2. Agrega títulos markdown:
+   # Título principal
+   ## Subtítulo
+   ### Sub-subtítulo
+   
+   **texto en negrita**
+   *texto en itálica*
+   `código`
+
+3. Agrega tablas:
+   | Columna 1 | Columna 2 |
+   |-----------|----------|
+   | Dato 1    | Dato 2    |
+
+Ejemplo de conversión parcial ya está en README.md
+
+═══════════════════════════════════════════════════════════════════════════════
+BADGES Y DECORACIONES (Opcional)
+═══════════════════════════════════════════════════════════════════════════════
+
+En el README.md puedes agregar badges (insignias) para que se vea profesional:
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/Version-1.0-green.svg)]()
+[![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg)]()
+
+Generador: https://shields.io/
+
+═══════════════════════════════════════════════════════════════════════════════
+RESUMEN: RESPUESTA A TU PREGUNTA
+═══════════════════════════════════════════════════════════════════════════════
+
+P: ¿Subo los 3 archivos o los desmenuzó?
+
+R: ✅ SUBES LOS 3 ARCHIVOS TAL COMO ESTÁN:
+   1. SADA_Professional.html  ← Sin cambios
+   2. Base_Datos_SADA.xlsx    ← Sin cambios
+   3. SADA_MANUAL_USUARIO.txt ← Puedes convertir a .md para GitHub
+
+   PERO los organizas en una estructura profesional:
+   
+   sada-analytics/
+   ├── README.md
+   ├── SADA_Professional.html
+   ├── .gitignore
+   ├── docs/
+   │   └── MANUAL_USUARIO.md
+   └── data/
+       └── Base_Datos_SADA.xlsx
+
+═══════════════════════════════════════════════════════════════════════════════
